@@ -9,17 +9,23 @@ import auth from '@react-native-firebase/auth';
 
 import { useNavigation } from '@react-navigation/native';
 const SignInScreen = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
     //Button functionality
     
-    const onSignInPressed = () => {
-        console.warn("Sign in");
-        //validate user
-        navigation.navigate('Home');
-    }
+    const onSignInPressed = async () => {
+        try {
+            const response = await auth().signInWithEmailAndPassword(email, password);
+            console.log('User signed in:', response);
+            navigation.navigate('Home');
+        } catch (error) {
+            console.error('Failed to sign in, user credentials are invalid');
+            alert('Failed to sign in, user credentials are invalid');
+        }
+    };
+
     const onForgotPasswordPressed = () => {
         navigation.navigate("ForgotPassword");
     }
@@ -37,9 +43,9 @@ const SignInScreen = () => {
                     resizeMode="contain" 
                 /> 
                 <CustomInput 
-                    value={username} 
-                    setValue={setUsername}
-                    placeholder="Username" 
+                    value={email} 
+                    setValue={setEmail}
+                    placeholder="Email Address" 
                     secureTextEntry={false}
 
                 />
