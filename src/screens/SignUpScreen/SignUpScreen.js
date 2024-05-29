@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons/SocialSignInButtons';
+import OrDivider from '../../components/OrDivider';
 import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = () => {
@@ -65,13 +66,16 @@ const SignUpScreen = () => {
                     <Text style={styles.link} onPress={onTermsOfUsePressed}> Terms of Use</Text> and 
                     <Text style={styles.link} onPress={onPrivacyPolicyPressed}> Privacy Policy</Text>
                 </Text>
-                <SocialSignInButtons />
-
                 <CustomButton 
                     onPress={onSignInPressed}
                     text="Have an account? Sign in"
                     type="TERTIARY"
                 />
+                <OrDivider />
+                <Text>Sign in with</Text>
+                <SocialSignInButtons />
+
+                
             </View>
         </ScrollView>
         

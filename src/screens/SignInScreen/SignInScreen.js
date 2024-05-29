@@ -4,6 +4,8 @@ import Logo from '../../../assets/images/logo_with_text.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
+import OrDivider from '../../components/OrDivider';
+
 import { useNavigation } from '@react-navigation/native';
 const SignInScreen = () => {
     const [username, setUsername] = useState('');
@@ -55,12 +57,15 @@ const SignInScreen = () => {
                     text="Forgot Password?"
                     type="TERTIARY"
                 />
-                <SocialSignInButtons />
                 <CustomButton 
                     onPress={onSignUpPressed}
                     text="Don't Have an Account? Create One"
                     type="TERTIARY"
                 />
+                <OrDivider />
+                <Text>Sign in with</Text>
+                <SocialSignInButtons />
+                
             </View>
         </ScrollView>
         
