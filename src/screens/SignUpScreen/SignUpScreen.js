@@ -5,18 +5,33 @@ import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons/SocialSignInButtons';
 import OrDivider from '../../components/OrDivider';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+
 
 const SignUpScreen = () => {
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
     
     const navigation = useNavigation();
     //Button functionality
-    const onRegisterPressed = () => {
-        navigation.navigate('ConfirmEmail');
-    }
+    const onRegisterPressed = async () => {
+        if (password !== passwordRepeat) {
+            alert("Passwords don't match");
+            return;
+        }
+        try {
+            const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+            console.log(userCredential);
+            // Send verification email
+            userCredential.user.sendEmailVerification();
+            navigation.navigate('ConfirmEmail');
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
+    };
+
     const onSignInPressed = () => {
         navigation.navigate('SignIn');
     }
@@ -31,13 +46,6 @@ const SignUpScreen = () => {
         <ScrollView>
             <View style={styles.root}>
                 <Text style={styles.title}>Create An Account </Text>
-                <CustomInput 
-                    value={username} 
-                    setValue={setUsername}
-                    placeholder="Username" 
-                    secureTextEntry={false}
-
-                />
                 <CustomInput 
                     value={email} 
                     setValue={setEmail}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "838660230042",
+    "project_id": "pathpilot-c30ee",
+    "storage_bucket": "pathpilot-c30ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838660230042:android:898d33451b51a5cd448823",
+        "android_client_info": {
+          "package_name": "com.pathpilot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM2bzL71RrC7zdzqTniKNWcFd4LbfwsxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

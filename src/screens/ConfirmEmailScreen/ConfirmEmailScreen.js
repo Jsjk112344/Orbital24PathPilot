@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth'
 
 const ConfirmEmailScreen = () => {
     const [code, setCode] = useState('');
@@ -10,31 +11,50 @@ const ConfirmEmailScreen = () => {
 
     //Button functionality
 
-    const onConfirmPressed = () => {
-        console.warn("confirm pressed")
-    }
+    const onConfirmPressed = async () => {
+        try {
+            // Assuming the user is already signed in and you are verifying their email
+            const currentUser = auth().currentUser;
+            if (currentUser) {
+                await currentUser.confirmEmailVerification(code);
+                alert("Email verified!");
+                navigation.navigate('Home');  // Adjust as needed
+            } else {
+                console.warn("No user signed in to verify.");
+            }
+        } catch (error) {
+            console.error("Failed to verify email:", error);
+            alert("Failed to verify email. Please check the code and try again.");
+        }
+    };
+       
+    const onResendPressed = async () => {
+        try {
+            const currentUser = auth().currentUser;
+            if (currentUser) {
+                await currentUser.sendEmailVerification();
+                alert("Verification email sent!");
+            } else {
+                console.warn("No user signed in to send verification to.");
+            }
+        } catch (error) {
+            console.error("Failed to send verification email:", error);
+            alert("Failed to resend verification email.");
+        }
+    };
     const onSignInPressed = () => {
         navigation.navigate('SignIn');
-    }
-    const onResendPressed = () => {
-        console.warn("resend pressed");
     }
 
     return (
         <ScrollView>
             <View style={styles.root}>
                 <Text style={styles.title}>Confirm your Email</Text>
-                <CustomInput 
-                    value={code} 
-                    setValue={setCode}
-                    placeholder="Enter your Confirmation Code" 
-                    secureTextEntry={false}
-                />
-                <CustomButton 
-                    onPress={onConfirmPressed}
-                    text="Confirm"
-                />
-                
+                <Text style={styles.text}>
+                    A verification link has been sent to your email address. 
+                    Please click on the link to verify your account. 
+                    After verification, you can use your credentials to sign in.
+                </Text>
                 <CustomButton 
                     onPress={onResendPressed}
                     text="Resend code"

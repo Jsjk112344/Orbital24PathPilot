@@ -5,6 +5,7 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import OrDivider from '../../components/OrDivider';
+import auth from '@react-native-firebase/auth';
 
 import { useNavigation } from '@react-navigation/native';
 const SignInScreen = () => {
