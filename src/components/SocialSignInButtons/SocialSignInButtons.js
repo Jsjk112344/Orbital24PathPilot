@@ -2,16 +2,29 @@ import React from "react"
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import CustomButton from "../CustomButton";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+// import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const SocialSignInButtons = () => {
+    const navigation = useNavigation();
     const onSignInFacebook = () => {
         console.warn("facebook")
     }
-    const onSignInGoogle = () => {
-        console.warn("google")
-    }
+
+    const onSignInGoogle = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
+            await auth().signInWithCredential(googleCredential);
+            console.log('Signed in with Google!');
+            navigation.navigate('Home');
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const onSignInApple = () => {
         console.warn("apple")
     }
