@@ -8,6 +8,11 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import Navigation from './src/navigation';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '838660230042-q8qo6lc1qeqmvubso64cpvudpfhj7nm9.apps.googleusercontent.com',
+});
 
 
 const App = () => {

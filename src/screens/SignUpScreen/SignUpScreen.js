@@ -69,18 +69,17 @@ const SignUpScreen = () => {
                     onPress={onRegisterPressed}
                     text="Register"
                 />
-                <Text style={styles.text}>
+                {/* <Text style={styles.text}>
                     By registering, you confirm that you accept our
                     <Text style={styles.link} onPress={onTermsOfUsePressed}> Terms of Use</Text> and 
                     <Text style={styles.link} onPress={onPrivacyPolicyPressed}> Privacy Policy</Text>
-                </Text>
+                </Text> */}
                 <CustomButton 
                     onPress={onSignInPressed}
                     text="Have an account? Sign in"
                     type="TERTIARY"
                 />
                 <OrDivider />
-                <Text>Sign in with</Text>
                 <SocialSignInButtons />
 
                 

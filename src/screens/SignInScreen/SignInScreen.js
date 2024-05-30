@@ -8,6 +8,7 @@ import OrDivider from '../../components/OrDivider';
 import auth from '@react-native-firebase/auth';
 
 import { useNavigation } from '@react-navigation/native';
+
 const SignInScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,13 +17,19 @@ const SignInScreen = () => {
     //Button functionality
     
     const onSignInPressed = async () => {
+        // Check if email or password fields are empty
+        if (email.trim() === '' || password.trim() === '') {
+            alert('Please enter your email and password.');
+            return;
+        }
+    
         try {
             const response = await auth().signInWithEmailAndPassword(email, password);
             console.log('User signed in:', response);
             navigation.navigate('Home');
         } catch (error) {
-            console.error('Failed to sign in, user credentials are invalid');
-            alert('Failed to sign in, user credentials are invalid');
+            console.error('Failed to sign in:', error.message);
+            alert('Failed to sign in, please check your credentials and try again.');
         }
     };
 
@@ -70,7 +77,6 @@ const SignInScreen = () => {
                     type="TERTIARY"
                 />
                 <OrDivider />
-                <Text>Sign in with</Text>
                 <SocialSignInButtons />
                 
             </View>
