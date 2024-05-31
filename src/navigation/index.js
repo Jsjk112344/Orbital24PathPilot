@@ -31,6 +31,8 @@ function HomeTabs() {
       },
       tabBarActiveTintColor: 'tomato',
       tabBarInactiveTintColor: 'gray',
+      headerShown: false
+      
     })}>
       <Tab.Screen name="Map" component={MapScreen} />
       <Tab.Screen name="Route" component={RouteScreen} />

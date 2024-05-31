@@ -29,6 +29,7 @@ const ProfileScreen = () => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.title}>My Profile</Text>
             <Text style={styles.label}>Biography:</Text>
             <TextInput
                 style={styles.input}
@@ -61,6 +62,11 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
     container: {
         padding: 20,
     },
