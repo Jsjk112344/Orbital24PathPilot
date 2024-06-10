@@ -1,95 +1,62 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
-import MapView, { MapMarker, MapPolyline } from 'react-native-maps';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import axios from 'axios';
-import CustomButton from '../../components/CustomButton';
-import polyline from '@mapbox/polyline';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import RouteForm from '../../utils/RouteForm/RouteForm';
+import { RouteContext } from '../../context/RouteContext';  // Ensure this is imported
+import axios from 'axios';
+import polyline from '@mapbox/polyline';
 
 const RouteScreen = () => {
+    const { setRouteDetails } = useContext(RouteContext);
     const [region, setRegion] = useState({
         latitude: 37.78825,
         longitude: -122.4324,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
-    const [origin, setOrigin] = useState(null);
-    const [destination, setDestination] = useState(null);
-    const [route, setRoute] = useState(null);
-    const [routeDetails, setRouteDetails] = useState({
-      distance: null,
-      duration: null,
-      coordinates: null,
-  });
 
-    // Function to fetch route details from Google Maps Directions API
-    const fetchRoute = async () => {
-      if (!origin || !destination) {
-          Alert.alert("Both origin and destination are required!");
+    const fetchRoute = async (stops) => {
+      if (stops.length < 2) {
+          Alert.alert("Error", "At least two locations are required to calculate a route!");
           return;
       }
   
+      const waypoints = stops.slice(1, -1).map(stop => `${stop.latitude},${stop.longitude}`).join('|');
+      const origin = stops[0];
+      const destination = stops[stops.length - 1];
       const originStr = `${origin.latitude},${origin.longitude}`;
       const destinationStr = `${destination.latitude},${destination.longitude}`;
+  
       try {
-          const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${originStr}&destination=${destinationStr}&key=AIzaSyC5_cY4UTzj7QTkIG3PT8trIrvfvEMF1YQ`);
+          const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originStr}&destination=${destinationStr}&key=AIzaSyDDiOFzvaeBEkHd8BQFIG29jNXDI-GAx_0` + (waypoints ? `&waypoints=optimize:true|${waypoints}` : '');
+          console.log("URL:", url); // Log the URL for the request
+          const response = await axios.get(url);
+          console.log("API Response:", response.data); // Log the API response
+  
           if (response.data.status === 'OK' && response.data.routes.length > 0) {
               const routeResponse = response.data.routes[0];
-              const leg = routeResponse.legs[0];
               const points = polyline.decode(routeResponse.overview_polyline.points);
               const coordinates = points.map(point => ({
                   latitude: point[0],
                   longitude: point[1]
               }));
+  
               setRouteDetails({
-                  distance: leg.distance.text,
-                  duration: leg.duration.text,
                   coordinates,
+                  distance: routeResponse.legs.reduce((total, leg) => total + leg.distance.value, 0) / 1000 + ' km',
+                  duration: routeResponse.legs.reduce((total, leg) => total + leg.duration.value, 0) / 60 + ' mins',
               });
-              setRoute(coordinates);
           } else {
               Alert.alert("Error", response.data.error_message || "No route found.");
           }
       } catch (error) {
-          console.error(error);
-          Alert.alert("Failed to fetch the route");
+          console.error("Fetch Route Error:", error);
+          Alert.alert("Network error", "Failed to fetch the route. Check your network connection.");
       }
     };
-  
 
     return (
         <View style={styles.container}>
-          {routeDetails.coordinates && (
-            <MapPolyline
-                coordinates={routeDetails.coordinates}
-                strokeWidth={5}
-                strokeColor="red"
-            />
-          )}
-          {routeDetails.distance && (
-            <View style={styles.routeInfo}>
-                <Text style={styles.routeText}>Distance: {routeDetails.distance}</Text>
-                <Text style={styles.routeText}>Duration: {routeDetails.duration}</Text>
-            </View>
-          )}
-            <MapView
-                style={styles.map}
-                region={region}
-                onRegionChangeComplete={setRegion}
-            >
-                {origin && <MapMarker coordinate={origin} title="Origin" />}
-                {destination && <MapMarker coordinate={destination} title="Destination" />}
-                {route && <MapPolyline coordinates={route} strokeWidth={5} strokeColor="red" />}
-            </MapView>
-            <View style={styles.overlay}>
-              <RouteForm
-                  setOrigin={setOrigin}
-                  setDestination={setDestination}
-                  setRegion={setRegion}
-                  fetchRoute={fetchRoute}
-              />
-            </View>
+            <RouteForm fetchRoute={fetchRoute} setRegion={setRegion} />
         </View>
     );
 };
@@ -98,22 +65,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-    },
-    overlay: {
-        position: 'absolute',
-        bottom: 50,
-        left: 0,
-        right: 0,
-        backgroundColor: 'rgba(255,255,255,0.9)',
-        padding: 15,
-    },
-    routeText: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    }
 });
 
 export default RouteScreen;

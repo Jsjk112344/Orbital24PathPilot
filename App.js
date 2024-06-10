@@ -9,6 +9,7 @@ import React from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import Navigation from './src/navigation';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { RouteProvider } from './src/context/RouteContext';
 
 GoogleSignin.configure({
   webClientId: '838660230042-q8qo6lc1qeqmvubso64cpvudpfhj7nm9.apps.googleusercontent.com',
@@ -18,7 +19,7 @@ GoogleSignin.configure({
 const App = () => {
   return (
     <SafeAreaView style={styles.root}>
-      <Navigation />
+      <RouteProvider><Navigation /></RouteProvider>
     </SafeAreaView>
   );
 }

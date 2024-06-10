@@ -1,7 +1,7 @@
 import React from "react"
 import { View, Text } from 'react-native'
 
-const TaskScreen = () => {
+const NotificationsScreen = () => {
   return (
     <View>
         <Text>Map Screen</Text>
@@ -9,4 +9,4 @@ const TaskScreen = () => {
   )
 };
 
-export default TaskScreen
+export default NotificationsScreen

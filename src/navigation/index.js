@@ -11,9 +11,10 @@ import ConfirmEmailScreen from "../screens/ConfirmEmailScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import MapScreen from "../screens/MapScreen";
 import RouteScreen from "../screens/RouteScreen";
-import TaskScreen from "../screens/TaskScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,8 +25,8 @@ function HomeTabs() {
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         if (route.name === 'Map') iconName = 'map';
-        else if (route.name === 'Route') iconName = 'road';
-        else if (route.name === 'Tasks') iconName = 'tasks';
+        else if (route.name === 'Plan Route') iconName = 'road';
+        else if (route.name === 'Notifications') iconName = 'bell';
         else if (route.name === 'Profile') iconName = 'user';
         return <Icon name={iconName} size={size} color={color} />;
       },
@@ -35,8 +36,8 @@ function HomeTabs() {
       
     })}>
       <Tab.Screen name="Map" component={MapScreen} />
-      <Tab.Screen name="Route" component={RouteScreen} />
-      <Tab.Screen name="Tasks" component={TaskScreen} />
+      <Tab.Screen name="Plan Route" component={RouteScreen} />
+      <Tab.Screen name="Notifications" component={NotificationsScreen} /> 
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

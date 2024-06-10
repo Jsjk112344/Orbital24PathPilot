@@ -7,7 +7,7 @@ const getDirections = async (origin, destination) => {
                 origin: origin,
                 destination: destination,
                 mode: 'transit', // set the mode to transit for public transportation
-                key: 'AIzaSyBxG4pUDKZPON1zIP437uGHK8hj1wdSbMU'
+                key: 'AIzaSyDDiOFzvaeBEkHd8BQFIG29jNXDI-GAx_0'
             }
         });
         return response.data;
