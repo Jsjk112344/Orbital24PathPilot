@@ -1,16 +1,34 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, getUserByEmail, sendPasswordResetEmail } from '@react-native-firebase/auth';
 
 const ForgotPasswordScreen = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const navigation = useNavigation();
+
     //Button functionality
     const onSendPressed = () => {
-        navigation.navigate('ResetPassword')
+        if (email.trim() === '') {
+            alert("Please enter your email.");
+            return;
+        }
+
+        const auth = getAuth();
+        sendPasswordResetEmail(auth, email)
+        .then(() => {
+            alert("Password reset link has been sent to your email");
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log('Error:', error);
+            alert(error.message);
+        });
     }
+
     const onSignInPressed = () => {
         navigation.navigate('SignIn');
     }
@@ -20,23 +38,20 @@ const ForgotPasswordScreen = () => {
             <View style={styles.root}>
                 <Text style={styles.title}>Reset your Password</Text>
                 <CustomInput 
-                    value={username} 
-                    setValue={setUsername}
-                    placeholder="Username" 
+                    value={email} 
+                    setValue={setEmail}
+                    placeholder="Email Address" 
                     secureTextEntry={false}
                 />
                 <CustomButton 
                     onPress={onSendPressed}
-                    text="Send Code"
+                    text="Reset Password"
                 />
                 <CustomButton 
                     onPress={onSignInPressed}
                     text="Back to Sign In"
                     type="TERTIARY"
                 />
-   
-    
-
             </View>
         </ScrollView>
         
