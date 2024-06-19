@@ -1,35 +1,94 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import MapView, { Polyline, Marker } from 'react-native-maps';
-import { RouteContext } from '../../context/RouteContext'; // Ensure this path matches your context location
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid } from 'react-native';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
+import { RouteContext } from '../../context/RouteContext'; 
 
 const MapScreen = () => {
-    const { routeDetails } = useContext(RouteContext);
-    const { coordinates } = routeDetails;
+    const { routeDetails, setCurrentLocation } = useContext(RouteContext);
+    const [currentRegion, setCurrentRegion] = useState({
+        latitude: 1.3521,  // Center on Singapore
+        longitude: 103.8198,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    });
+    const [userLocation, setUserLocation] = useState(null);
+    const [region, setRegion] = useState(currentRegion);
+
+    useEffect(() => {
+        const requestLocationPermission = async () => {
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                        title: "Location Access Permission",
+                        message: "This app needs access to your location for navigation purposes",
+                        buttonNeutral: "Ask Me Later",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    getCurrentLocation();
+                } else {
+                    console.log("Location permission denied");
+                }
+            } else {
+                getCurrentLocation(); 
+            }
+        };
+
+        const getCurrentLocation = async () => {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setUserLocation({
+                        latitude,
+                        longitude,
+                        latitudeDelta: 0.005,
+                        longitudeDelta: 0.005,
+                    });
+                    setCurrentLocation({
+                        latitude,
+                        longitude,
+                        label: "Current Location"
+                    });
+                },
+                (error) => {
+                    console.error("Geolocation error:", error);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+        };
+
+        requestLocationPermission();
+    }, [setCurrentLocation]); 
 
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
-                initialRegion={{
-                    latitude: 1.3521,  // Center on Singapore
-                    longitude: 103.8198,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
+                region={userLocation || region}
+                onRegionChangeComplete={setRegion} // This updates the region as the user interacts with the map
             >
-                {coordinates.length > 0 && (
+                {routeDetails.coordinates.length > 0 && (
                     <Polyline
-                        coordinates={coordinates}
+                        coordinates={routeDetails.coordinates}
                         strokeWidth={5}
-                        strokeColor="red" // You can customize the color
+                        strokeColor="red"
                     />
                 )}
-                {coordinates.length > 0 && (
+                {routeDetails.coordinates.length > 0 && (
                     <>
-                        <Marker coordinate={coordinates[0]} title="Start" />
-                        <Marker coordinate={coordinates[coordinates.length - 1]} title="End" />
+                        <Marker coordinate={routeDetails.coordinates[0]} title="Start" />
+                        <Marker coordinate={routeDetails.coordinates[routeDetails.coordinates.length - 1]} title="End" />
                     </>
+                )}
+                {userLocation && (
+                    <Marker
+                        coordinate={userLocation}
+                        title="You are here"
+                    />
                 )}
             </MapView>
         </View>
