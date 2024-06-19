@@ -20,6 +20,7 @@ const ForgotPasswordScreen = () => {
         sendPasswordResetEmail(auth, email)
         .then(() => {
             alert("Password reset link has been sent to your email");
+            console.log("Password reset link sent");
         })
         .catch((error) => {
             const errorCode = error.code;
