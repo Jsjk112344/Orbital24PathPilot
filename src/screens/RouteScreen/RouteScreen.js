@@ -87,10 +87,6 @@ const RouteScreen = () => {
                     }
                 }}
             />
-            {/* Correct placement of conditional rendering */}
-            {routeDetails && routeDetails.details && (
-                <TransitDetails details={routeDetails.details} />
-            )}
         </View>
     );
     

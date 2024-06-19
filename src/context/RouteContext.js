@@ -1,33 +1,31 @@
 import React, { createContext, useState } from 'react';
 
-// Expand the context's default state to include currentLocation
-export const RouteContext = createContext({
-    routeDetails: {
-        coordinates: [],
-        distance: '',
-        duration: '',
-    },
+// Define the initial state and types of context for better management and predictability
+const initialRouteDetails = {
+    coordinates: [],
+    distance: '',
+    duration: '',
+};
+
+const initialContext = {
+    routeDetails: initialRouteDetails,
     setRouteDetails: () => {},
-    currentLocation: null,  // Null initially, will store current location object
+    currentLocation: null,
     setCurrentLocation: () => {}
-});
+};
+
+export const RouteContext = createContext(initialContext);
 
 export const RouteProvider = ({ children }) => {
-    const [routeDetails, setRouteDetails] = useState({
-        coordinates: [],
-        distance: '',
-        duration: '',
-    });
-
-    // State to hold the current location
+    const [routeDetails, setRouteDetails] = useState(initialRouteDetails);
     const [currentLocation, setCurrentLocation] = useState(null);
 
     return (
-        <RouteContext.Provider value={{ 
+        <RouteContext.Provider value={{
             routeDetails, 
             setRouteDetails,
             currentLocation,
-            setCurrentLocation 
+            setCurrentLocation
         }}>
             {children}
         </RouteContext.Provider>
