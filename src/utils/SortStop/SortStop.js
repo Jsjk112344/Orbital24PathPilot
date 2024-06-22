@@ -42,6 +42,7 @@ async function sortStops(stops) {
         newStops[i] = stops[newStops[i]];
     }
     console.info(newStops);
+  
     return newStops;
 }
 

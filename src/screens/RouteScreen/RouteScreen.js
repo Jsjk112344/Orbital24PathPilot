@@ -22,56 +22,56 @@ const RouteScreen = () => {
             Alert.alert("Error", "At least two locations are required to calculate a route!");
             return;
         }
-
-        //Function to sort "stops" array
-        newStops = sortStops(stops);
-        
     
-        // const waypoints = stops.slice(1, -1).map(stop => `${stop.latitude},${stop.longitude}`).join('|');
-        // const origin = stops[0];
-        // const destination = stops[stops.length - 1];
-        // const originStr = `${origin.latitude},${origin.longitude}`;
-        // const destinationStr = `${destination.latitude},${destination.longitude}`;
-        // const mode = 'transit';  // Set the mode to transit
+        const sortedStops = await sortStops(stops);
+        const requests = [];
     
-        // try {
-        //     const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originStr}&destination=${destinationStr}&mode=${mode}&key=AIzaSyDDiOFzvaeBEkHd8BQFIG29jNXDI-GAx_0` + (waypoints ? `&waypoints=optimize:true|${waypoints}` : '');
-        //     const response = await axios.get(url);
+        for (let i = 0; i < sortedStops.length - 1; i++) {
+            const origin = sortedStops[i];
+            const destination = sortedStops[i + 1];
+            const originStr = `${origin.latitude},${origin.longitude}`;
+            const destinationStr = `${destination.latitude},${destination.longitude}`;
+            const mode = 'transit';
+            const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originStr}&destination=${destinationStr}&mode=${mode}&key=AIzaSyDDiOFzvaeBEkHd8BQFIG29jNXDI-GAx_0`;
+            requests.push(axios.get(url));
+        }
     
-        //     if (response.data.status === 'OK' && response.data.routes.length > 0) {
-        //         const routeResponse = response.data.routes[0];
-        //         const transitDetails = routeResponse.legs.map(leg => ({
-        //             distance: leg.distance.text,
-        //             duration: leg.duration.text,
-        //             steps: leg.steps.map(step => {
-        //                 return {
-        //                     travel_mode: step.travel_mode,
-        //                     instructions: step.html_instructions,
-        //                     transit_details: step.transit_details ? {
-        //                         departure_stop: step.transit_details.departure_stop.name,
-        //                         arrival_stop: step.transit_details.arrival_stop.name,
-        //                         line: step.transit_details.line.short_name,
-        //                         vehicle: step.transit_details.line.vehicle.type
-        //                     } : null
-        //                 };
-        //             })
-        //         }));
+        Promise.all(requests)
+            .then(responses => {
+                const allTransitDetails = responses.map((response, index) => {
+                    if (response.data.status === 'OK' && response.data.routes.length > 0) {
+                        const routeResponse = response.data.routes[0];
+                        return routeResponse.legs.map(leg => ({
+                            distance: leg.distance.text,
+                            duration: leg.duration.text,
+                            steps: leg.steps.map(step => ({
+                                travel_mode: step.travel_mode,
+                                instructions: step.html_instructions,
+                                transit_details: step.transit_details ? {
+                                    departure_stop: step.transit_details.departure_stop.name,
+                                    arrival_stop: step.transit_details.arrival_stop.name,
+                                    line: step.transit_details.line.short_name,
+                                    vehicle: step.transit_details.line.vehicle.type
+                                } : null
+                            }))
+                        }));
+                    }
+                    return [];
+                }).flat();
     
-        //         setRouteDetails(prevState => ({
-        //             ...prevState,
-        //             coordinates: [], // Transit routes might not use polyline
-        //             details: transitDetails,
-        //             distance: routeResponse.legs.reduce((total, leg) => total + leg.distance.value, 0) / 1000 + ' km',
-        //             duration: routeResponse.legs.reduce((total, leg) => total + leg.duration.value, 0) / 60 + ' mins',
-        //         }));
-        //     } else {
-        //         Alert.alert("Error", response.data.error_message || "No route found.");
-        //     }
-        // } catch (error) {
-        //     console.error("Fetch Route Error:", error);
-        //     Alert.alert("Network error", "Failed to fetch the route. Check your network connection.");
-        // }
+                setRouteDetails(prevState => ({
+                    ...prevState,
+                    details: allTransitDetails,
+                    distance: allTransitDetails.reduce((total, detail) => total + parseFloat(detail.distance.replace(' km', '')), 0) + ' km',
+                    duration: allTransitDetails.reduce((total, detail) => total + parseFloat(detail.duration.replace(' mins', '')), 0) + ' mins',
+                }));
+            })
+            .catch(error => {
+                console.error("Fetch Route Error:", error);
+                Alert.alert("Network error", "Failed to fetch the route. Check your network connection.");
+            });
     };
+    
     
     return (
         <View style={styles.container}>
