@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">PathPilot</string>
-    <string name="facebook_app_id">1551001575476751</string>
-    <string name="facebook_client_token">aa8a188b36a3d58e3db9c656087b7751</string>
+  <string name="app_name">PathPilot</string>
+  <string name="facebook_app_id">1551001575476751</string>
+  <string name="facebook_client_token">aa8a188b36a3d58e3db9c656087b7751</string>
+  <string name="expo_runtime_version">1.0.0</string>
 </resources>

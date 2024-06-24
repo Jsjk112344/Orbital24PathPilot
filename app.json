@@ -1,4 +1,17 @@
 {
   "name": "PathPilot",
-  "displayName": "PathPilot"
+  "displayName": "PathPilot",
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "241775cf-b64b-4c70-a709-284f9118b710"
+      }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/241775cf-b64b-4c70-a709-284f9118b710"
+    },
+    "android": {},
+    "ios": {}
+  }
 }
