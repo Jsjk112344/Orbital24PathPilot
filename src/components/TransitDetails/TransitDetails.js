@@ -9,6 +9,7 @@ const TransitDetails = ({ details }) => {
     return (
         <ScrollView style={styles.container}>
             {details.map((leg, index) => {
+                // console.log(leg);
                 return (
                     <View key={index} style={styles.legContainer}>
                         <Text style={styles.legTitle}>Leg {index + 1}</Text>

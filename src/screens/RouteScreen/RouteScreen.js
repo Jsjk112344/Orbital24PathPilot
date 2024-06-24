@@ -16,7 +16,24 @@ const RouteScreen = () => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
-
+    const createPolyline = (responses) => {
+        let coordinates = []; // This will hold all your polyline coordinates
+    
+        responses.forEach(response => {
+            if (response.data.status === 'OK' && response.data.routes.length > 0) {
+                const routeResponse = response.data.routes[0];
+                const decodedPolyline = polyline.decode(routeResponse.overview_polyline.points);
+                const polylineCoordinates = decodedPolyline.map(point => ({
+                    latitude: point[0],
+                    longitude: point[1]
+                }));
+                coordinates.push(...polylineCoordinates); // Add these coordinates to the main array
+            }
+        });
+    
+        return coordinates;
+    };
+    
     const fetchRoute = async () => {
         if (stops.length < 2) {
             Alert.alert("Error", "At least two locations are required to calculate a route!");
@@ -58,12 +75,13 @@ const RouteScreen = () => {
                     }
                     return [];
                 }).flat();
-    
+                const polylineCoordinates = createPolyline(responses);
                 setRouteDetails(prevState => ({
                     ...prevState,
                     details: allTransitDetails,
                     distance: allTransitDetails.reduce((total, detail) => total + parseFloat(detail.distance.replace(' km', '')), 0) + ' km',
                     duration: allTransitDetails.reduce((total, detail) => total + parseFloat(detail.duration.replace(' mins', '')), 0) + ' mins',
+                    coordinates: polylineCoordinates,
                 }));
             })
             .catch(error => {
