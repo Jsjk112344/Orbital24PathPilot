@@ -8,7 +8,7 @@ const fetchRoutes = async (sortedStops, mode) => {
             const destination = array[index + 1];
             const originStr = `${origin.latitude},${origin.longitude}`;
             const destinationStr = `${destination.latitude},${destination.longitude}`;
-            const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originStr}&destination=${destinationStr}&mode=${mode}&key=AIzaSyDDiOFzvaeBEkHd8BQFIG29jNXDI-GAx_0`;
+            const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originStr}&destination=${destinationStr}&mode=${mode}&key=AIzaSyC5_cY4UTzj7QTkIG3PT8trIrvfvEMF1YQ`;
             return axios.get(url);
         }
         return null;

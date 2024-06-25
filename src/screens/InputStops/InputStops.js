@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, ScrollView} from 'react-nativ
 import RouteForm from '../../utils/RouteForm/RouteForm';
 import useRouteLogic from '../../utils/useRouteLogic/useRouteLogic';
 import { useNavigation } from '@react-navigation/native';
+import DateTimeForm from '../../utils/DateTimeForm/DateTimeForm';
 
 
 const InputStops = () => {
@@ -28,7 +29,9 @@ const InputStops = () => {
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}>
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
-           
+            <View style={styles.formContainer}>
+                <DateTimeForm/>
+            </View>
             <View style={styles.formContainer}>
                 <RouteForm
                     fetchRoute={handleFetchRoute}
