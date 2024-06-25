@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, ScrollView} from 'react-native';
 import RouteForm from '../../utils/RouteForm/RouteForm';
 import useRouteLogic from '../../utils/useRouteLogic/useRouteLogic';
 import { useNavigation } from '@react-navigation/native';
+
 
 const InputStops = () => {
     const { stops, setStops, fetchAndSetRoute, region, setRegion} = useRouteLogic();
@@ -18,7 +19,12 @@ const InputStops = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView 
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps='handled'
+
+            
+            style={styles.container}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}>
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
@@ -32,7 +38,7 @@ const InputStops = () => {
                     currentLocation={region}  // Assuming you want to pass the current region as the location
                 />
             </View>
-        </View>
+        </ScrollView>
     );
 };
 

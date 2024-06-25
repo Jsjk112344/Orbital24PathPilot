@@ -10,6 +10,9 @@ import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import Navigation from './src/navigation';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { RouteProvider } from './src/context/RouteContext';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 GoogleSignin.configure({
   webClientId: '838660230042-q8qo6lc1qeqmvubso64cpvudpfhj7nm9.apps.googleusercontent.com',
