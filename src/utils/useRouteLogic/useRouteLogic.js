@@ -1,0 +1,44 @@
+import { useState, useContext } from 'react';
+import { Alert } from 'react-native';
+import { RouteContext } from '../../context/RouteContext';
+import { fetchRoutes, decodePolylines, parseRouteResponses } from '../apiUtils/apiUtils'
+import { sortStops } from '../SortStop/SortStop'
+
+const useRouteLogic = () => {
+    const { setRouteDetails, currentLocation } = useContext(RouteContext);
+    const [stops, setStops] = useState([]);
+    const [region, setRegion] = useState({
+        latitude: 1.3521,  // Default to Singapore
+        longitude: 103.8198,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    });
+
+    const fetchAndSetRoute = async () => {
+        if (stops.length < 2) {
+            Alert.alert("Error", "At least two locations are required to calculate a route!");
+            return;
+        }
+        try {
+            const sortedStops = await sortStops(stops); // Ensure this function is correctly defined/imported
+            const responses = await fetchRoutes(sortedStops, 'transit');
+            const allTransitDetails = parseRouteResponses(responses);
+            const polylineCoordinates = decodePolylines(responses);
+
+            setRouteDetails(prevState => ({
+                ...prevState,
+                details: allTransitDetails,
+                coordinates: polylineCoordinates,
+            }));
+
+            // Optionally update the region here if needed
+        } catch (error) {
+            console.error("Error fetching and setting route:", error);
+            Alert.alert("Error", "Failed to process the route data.");
+        }
+    };
+
+    return { stops, setStops, fetchAndSetRoute, region, setRegion };
+};
+
+export default useRouteLogic;

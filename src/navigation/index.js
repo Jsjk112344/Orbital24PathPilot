@@ -14,6 +14,8 @@ import RouteScreen from "../screens/RouteScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+import NewTrip from "../screens/NewTrip";
+import InputStops from "../screens/InputStops";
 
 
 const Stack = createNativeStackNavigator();
@@ -37,7 +39,7 @@ function HomeTabs() {
     })}>
       <Tab.Screen name="Map" component={MapScreen} />
       <Tab.Screen name="Plan Route" component={RouteScreen} />
-      <Tab.Screen name="Notifications" component={NotificationsScreen} /> 
+      <Tab.Screen name="My Trips" component={NotificationsScreen} /> 
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
@@ -53,6 +55,8 @@ const Navigation = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen name="NewTrip" component={NewTrip} />
+        <Stack.Screen name="InputStops" component={InputStops} />
       </Stack.Navigator>
     </NavigationContainer>
   );

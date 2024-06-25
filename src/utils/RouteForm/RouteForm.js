@@ -6,7 +6,7 @@ import { RouteContext } from '../../context/RouteContext';
 
 const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
     const { currentLocation } = useContext(RouteContext); // Use the context to get the current location
-
+    
     const handleUseMyLocation = () => {
         if (currentLocation && !stops.some(stop => stop.label === currentLocation.label)) {
             setStops([currentLocation, ...stops]);
@@ -50,7 +50,7 @@ const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
                 }}
             />
             <CustomButton text="Use My Location" onPress={handleUseMyLocation} />
-            <CustomButton text="Find Route" onPress={() => fetchRoute(stops)} />
+            <CustomButton text="Create Trip" onPress={() => fetchRoute(stops)} />
         </View>
     );
 };
