@@ -1,18 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { fetchTrips } from '../../utils/SQLite/SQLite';
 import { View, StyleSheet, Text } from 'react-native';
-import TransitDetails from '../../components/TransitDetails';
 import { useContext } from 'react';
 import { RouteContext } from "../../context/RouteContext";  // Correct the import path as necessary
 
 export const useRouteDetails = () => useContext(RouteContext);
 
 const NotificationsScreen = () => {
-  const { routeDetails } = useRouteDetails(); // Directly using context
-  const { details } = routeDetails;
+  const [trips, setTrips] = useState([]);
+
+  useEffect(() => {
+    fetchTrips().then((data) => {
+      setTrips(data);
+    }).catch((error) => {
+      console.log('Failed to fetch trips:', error);
+    });
+  }, []);
 
   return (
-    <View style={styles.container}>
-        {details ? <TransitDetails details={details} /> : <Text>No transit details available.</Text>}
+    <View style={{ flex: 1, padding: 10 }}>
+      {trips.map((trip, index) => (
+        <View key={index} style={{ padding: 10, marginBottom: 10, backgroundColor: '#f0f0f0' }}>
+          <Text>{trip.name} - {trip.date}</Text>
+          <Text>{trip.details}</Text>
+        </View>
+      ))}
     </View>
   );
 };

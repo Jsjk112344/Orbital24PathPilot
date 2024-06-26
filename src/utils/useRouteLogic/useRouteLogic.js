@@ -32,9 +32,11 @@ const useRouteLogic = () => {
             }));
 
             // Optionally update the region here if needed
+            return { success: true };
         } catch (error) {
             console.error("Error fetching and setting route:", error);
             Alert.alert("Error", "Failed to process the route data.");
+            return { success: false, message: error.message };
         }
     };
 

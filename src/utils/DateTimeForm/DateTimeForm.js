@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
-const CustomInput = ({ label, onPress, value }) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.inputContainer}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.input}>{value}</Text>
-    </TouchableOpacity>
-  );
-};
+import { RouteContext } from '../../context/RouteContext';
+import CustomInput from '../../components/CustomInput';
 
 const DateTimeForm = () => {
-    const [date, setDate] = useState(new Date());
+    const { tripInfo, setTripInfo } = useContext(RouteContext);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
@@ -32,23 +25,33 @@ const DateTimeForm = () => {
         setTimePickerVisibility(false);
     };
 
-    const handleConfirmDate = (selectedDate) => {
-        setDate(selectedDate);
+    const handleConfirmDate = (date) => {
+        setTripInfo(prev => ({ ...prev, tripDate: date }));
         hideDatePicker();
     };
 
-    const handleConfirmTime = (selectedTime) => {
-        setDate(new Date(date.setHours(selectedTime.getHours(), selectedTime.getMinutes())));
+    const handleConfirmTime = (time) => {
+        const newTime = new Date(tripInfo.tripDate);
+        newTime.setHours(time.getHours(), time.getMinutes());
+        setTripInfo(prev => ({ ...prev, tripTime: newTime }));
         hideTimePicker();
+    };
+
+    const handleNameChange = (text) => {
+        setTripInfo(prev => ({ ...prev, tripName: text }));
     };
 
     return (
         <View style={styles.container}>
-            <CustomInput
-                label="Date of Trip"
-                value={date.toLocaleDateString()}
-                onPress={showDatePicker}
+            <TextInput
+                style={styles.input}
+                onChangeText={handleNameChange}
+                value={tripInfo.tripName}
+                placeholder="Enter Trip Name"
             />
+            <TouchableOpacity onPress={showDatePicker} style={styles.input}>
+                <Text>Date of Trip: {tripInfo.tripDate.toLocaleDateString()}</Text>
+            </TouchableOpacity>
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
@@ -56,11 +59,9 @@ const DateTimeForm = () => {
                 onCancel={hideDatePicker}
             />
 
-            <CustomInput
-                label="Start Time"
-                value={date.toLocaleTimeString()}
-                onPress={showTimePicker}
-            />
+            <TouchableOpacity onPress={showTimePicker} style={styles.input}>
+                <Text>Start Time: {tripInfo.tripTime.toLocaleTimeString()}</Text>
+            </TouchableOpacity>
             <DateTimePickerModal
                 isVisible={isTimePickerVisible}
                 mode="time"
@@ -76,20 +77,10 @@ const styles = StyleSheet.create({
     container: {
         padding: 20,
     },
-    inputContainer: {
-        marginBottom: 15,
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    label: {
-        fontSize: 16,
-        color: '#666',
-        marginBottom: 5,
-    },
     input: {
-        fontSize: 16,
-        color: '#333',
+        padding: 10,
+        backgroundColor: '#ddd',
+        marginBottom: 10
     }
 });
 
