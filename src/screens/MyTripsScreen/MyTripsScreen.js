@@ -1,36 +1,24 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert } from 'react-native';
-import { fetchTrips, deleteTrip } from '../../utils/SQLite/SQLite';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { fetchTrips, deleteTrip } from '../../utils/SQLite/SQLite';
+import { RouteContext } from '../../context/RouteContext';
 
 const MyTripsScreen = () => {
-  const [trips, setTrips] = useState([]);
+  const { userId } = useContext(RouteContext);
   const navigation = useNavigation();
+  const [trips, setTrips] = useState([]);
 
   useEffect(() => {
-    loadTrips();
-  }, []);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
-          <Text style={styles.refreshButtonText}>Refresh</Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
+    if (userId) {
+      loadTrips();
+    }
+  }, [userId]);
 
   const loadTrips = () => {
-    fetchTrips().then((data) => {
-      setTrips(data);
-    }).catch((error) => {
+    fetchTrips(userId).then(setTrips).catch((error) => {
       console.error('Failed to fetch trips:', error);
     });
-  };
-
-  const handleRefresh = () => {
-    loadTrips();
   };
 
   const handleSelectTrip = (trip) => {
@@ -52,27 +40,30 @@ const MyTripsScreen = () => {
     ]);
   };
 
+  const renderItem = ({ item }) => {
+    const tripDate = new Date(item.date.split(' ')[0]); // Extract and parse the date part
+    return (
+      <View style={styles.tripItem}>
+        <TouchableOpacity onPress={() => handleSelectTrip(item)} style={styles.item}>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text>{tripDate.toLocaleDateString()}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDeleteTrip(item.id)} style={styles.deleteButton}>
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleRefresh} style={styles.button}>
-                    <Text style={styles.buttonText}>Refresh</Text>
+      <TouchableOpacity onPress={loadTrips} style={styles.refreshButton}>
+        <Text style={styles.refreshButtonText}>Refresh</Text>
       </TouchableOpacity>
       <FlatList
         data={trips}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          
-          <View style={styles.tripItem}>
-            
-            <TouchableOpacity onPress={() => handleSelectTrip(item)} style={styles.item}>
-              <Text style={styles.title}>{item.name}</Text>
-              <Text>{new Date(item.date).toLocaleDateString()}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleDeleteTrip(item.id)} style={styles.deleteButton}>
-              <Text style={styles.deleteButtonText}>Delete</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
       />
     </View>
   );
@@ -80,8 +71,8 @@ const MyTripsScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      padding: 10,
+    flex: 1,
+    padding: 10,
   },
   tripItem: {
     flexDirection: 'row',
@@ -106,21 +97,14 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   refreshButton: {
+    backgroundColor: '#ddd',
     padding: 10,
-    marginRight: 10,
+    marginBottom: 10,
   },
   refreshButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
-  },
-  button: {
-      padding: 10,
-      backgroundColor: '#ddd',
-      borderRadius: 5,
-  },
-  buttonText: {
-      fontSize: 16,
-      color: '#000',
+    color: '#000',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import auth from '@react-native-firebase/auth';
 
 // Define the initial state for route details
 const initialRouteDetails = {
@@ -11,8 +12,8 @@ const initialRouteDetails = {
 // Define the initial state for trip information
 const initialTripInfo = {
     tripName: '',
-    tripDate: new Date(), // Default to current date
-    tripTime: new Date()  // Default to current time (can separate time if needed)
+    tripDate: new Date(), // Default to the current date
+    tripTime: new Date()  // Default to the current time (can separate time if needed)
 };
 
 // Initial context with all states and their setters
@@ -22,7 +23,9 @@ const initialContext = {
     currentLocation: null,
     setCurrentLocation: () => {},
     tripInfo: initialTripInfo,
-    setTripInfo: () => {}
+    setTripInfo: () => {},
+    userId: null,
+    setUserId: () => {},
 };
 
 export const RouteContext = createContext(initialContext);
@@ -31,25 +34,40 @@ export const RouteProvider = ({ children }) => {
     const [routeDetails, setRouteDetails] = useState(initialRouteDetails);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [tripInfo, setTripInfo] = useState(initialTripInfo);
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = auth().onAuthStateChanged((user) => {
+            if (user) {
+                setUserId(user.uid);
+            } else {
+                setUserId(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
     const [sortedStops, setSortedStops] = useState([]);
     const saveTrip = (tripDetails) => {
-        setRouteDetails(prevDetails => ({
+        setRouteDetails((prevDetails) => ({
             ...prevDetails,
-            savedTrips: [...prevDetails.savedTrips, tripDetails]
+            savedTrips: [...prevDetails.savedTrips, tripDetails],
         }));
     };
 
     return (
         <RouteContext.Provider value={{
-            routeDetails, 
+            routeDetails,
             setRouteDetails,
             currentLocation,
             setCurrentLocation,
             tripInfo,
             setTripInfo,
+            userId,
+            setUserId,
             sortedStops,
             setSortedStops,
-            saveTrip
+            saveTrip,
         }}>
             {children}
         </RouteContext.Provider>

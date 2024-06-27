@@ -5,7 +5,7 @@ const TripDetails = ({ tripInfo }) => {
 
     const tripDate = new Date(tripInfo.tripDate).toLocaleDateString();
     const tripTime = new Date(tripInfo.tripDate).toLocaleTimeString();
-    console.log(new Date(tripInfo.tripDate))
+    console.log(tripInfo.tripDate)
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Trip Details</Text>

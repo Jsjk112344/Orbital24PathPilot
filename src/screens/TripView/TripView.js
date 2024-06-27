@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import TransitDetails from '../../components/TransitDetails';
 import TripDetails from '../../components/TripDetails/TripDetails';
 import { fetchTripById } from '../../utils/SQLite/SQLite';
+import { RouteContext } from '../../context/RouteContext';
 
 const TripView = () => {
+    const { setRouteDetails } = useContext(RouteContext);
     const navigation = useNavigation();
     const route = useRoute();
     const { trip } = route.params;
-    
+
     const [tripDetails, setTripDetails] = useState(null);
 
     useEffect(() => {
@@ -17,6 +19,12 @@ const TripView = () => {
             try {
                 const dbTrip = await fetchTripById(trip.id);
                 setTripDetails(dbTrip);
+                setRouteDetails({
+                    coordinates: [], // Set this as needed
+                    distance: '', // Set this as needed
+                    duration: '', // Set this as needed
+                    details: JSON.parse(dbTrip.details)
+                });
             } catch (error) {
                 console.error('Failed to load trip details:', error);
             }
@@ -27,7 +35,7 @@ const TripView = () => {
         } else {
             setTripDetails(trip);
         }
-    }, [trip]);
+    }, [trip, setRouteDetails]);
 
     if (!tripDetails) {
         return (
@@ -37,7 +45,8 @@ const TripView = () => {
         );
     }
 
-    const tripDate = new Date(tripDetails.date);
+    const tripDate = Date(tripDetails.date);
+    console.log(tripDate);
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -57,7 +66,6 @@ const TripView = () => {
 };
 
 const styles = StyleSheet.create({
-    
     container: {
         flex: 1,
     },
