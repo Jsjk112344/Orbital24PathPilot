@@ -1,5 +1,3 @@
-// NewTrip.js
-
 import React, { useContext } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -9,41 +7,45 @@ import { RouteContext } from '../../context/RouteContext';
 import { saveTripDetails } from '../../utils/SQLite/SQLite';
 
 const NewTrip = ({ route }) => {
-  const { routeDetails, saveTrip, tripInfo } = useContext(RouteContext);
+  const { routeDetails, saveTrip, tripInfo, userId } = useContext(RouteContext);
   const navigation = useNavigation();
 
   const { onSave } = route.params;
 
   const handleSaveTrip = async () => {
+    if (!userId) {
+      alert("User not logged in.");
+      return;
+    }
     try {
       const tripName = tripInfo.tripName;
-      const tripDate = tripInfo.tripDate.toISOString();
+      const tripDate = `${tripInfo.tripDate.toISOString()}`;
+      const tripTime = `${tripInfo.tripTime.toISOString()}`;
       const tripDetails = JSON.stringify(routeDetails.details);
-
-      // Save to SQLite and context
-      await saveTripDetails(tripName, tripDate, tripDetails);
+     
+      await saveTripDetails(userId, tripName, `${tripDate} ${tripTime}`, tripDetails);
 
       saveTrip({
+        user_id: userId,
         name: tripInfo.tripName,
-        date: tripInfo.tripDate,
-        time: tripInfo.tripTime,
+        date: tripDate,
+        time: tripTime,
         details: routeDetails.details,
       });
 
       alert('Trip saved successfully!');
       
-      // Call the callback function to refresh the trip list
       if (onSave) {
         onSave();
       }
 
-      navigation.navigate('Plan Route');
+      navigation.goBack();
+      navigation.goBack();
     } catch (error) {
       console.error('Failed to save trip:', error);
       alert('Failed to save trip details.');
     }
   };
-
 
   return (
     <View style={styles.container}>

@@ -14,7 +14,7 @@ const SavedTrips = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleSelectTrip(item)} style={styles.item}>
       <Text style={styles.title}>{item.name != "" ? item.name : "Unnamed Trip"}</Text>
-      <Text>{new Date(item.date).toLocaleDateString()}</Text>
+      
     </TouchableOpacity>
   );
 
