@@ -11,15 +11,54 @@ import ConfirmEmailScreen from "../screens/ConfirmEmailScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import MapScreen from "../screens/MapScreen";
 import RouteScreen from "../screens/RouteScreen";
-import NotificationsScreen from "../screens/NotificationsScreen";
+import MyTripsScreen from "../screens/MyTripsScreen";  // Renamed NotificationsScreen to MyTripsScreen
 import ProfileScreen from "../screens/ProfileScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import NewTrip from "../screens/NewTrip";
 import InputStops from "../screens/InputStops";
-
+import TripView from "../screens/TripView/TripView";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function MapStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MapMain" component={MapScreen} />
+      <Stack.Screen name="NewTrip" component={NewTrip} />
+      <Stack.Screen name="InputStops" component={InputStops} />
+      <Stack.Screen name="TripView" component={TripView} />
+    </Stack.Navigator>
+  );
+}
+
+function PlanRouteStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="PlanRouteMain" component={RouteScreen} />
+      <Stack.Screen name="NewTrip" component={NewTrip} />
+      <Stack.Screen name="InputStops" component={InputStops} />
+      <Stack.Screen name="TripView" component={TripView} />
+    </Stack.Navigator>
+  );
+}
+
+function MyTripsStack() {  
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MyTripsMain" component={MyTripsScreen} />  
+      <Stack.Screen name="TripView" component={TripView} />
+    </Stack.Navigator>
+  );
+}
+
+function ProfileStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+}
 
 function HomeTabs() {
   return (
@@ -28,19 +67,18 @@ function HomeTabs() {
         let iconName;
         if (route.name === 'Map') iconName = 'map';
         else if (route.name === 'Plan Route') iconName = 'road';
-        else if (route.name === 'Notifications') iconName = 'bell';
+        else if (route.name === 'My Trips') iconName = 'suitcase';  
         else if (route.name === 'Profile') iconName = 'user';
         return <Icon name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: 'tomato',
       tabBarInactiveTintColor: 'gray',
-      headerShown: false
-      
+      headerShown: false,
     })}>
-      <Tab.Screen name="Map" component={MapScreen} />
-      <Tab.Screen name="Plan Route" component={RouteScreen} />
-      <Tab.Screen name="My Trips" component={NotificationsScreen} /> 
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Map" component={MapStack} />
+      <Tab.Screen name="Plan Route" component={PlanRouteStack} />
+      <Tab.Screen name="My Trips" component={MyTripsStack} />  
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }
@@ -55,8 +93,6 @@ const Navigation = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-        <Stack.Screen name="NewTrip" component={NewTrip} />
-        <Stack.Screen name="InputStops" component={InputStops} />
       </Stack.Navigator>
     </NavigationContainer>
   );

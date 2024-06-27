@@ -46,7 +46,7 @@ export const db = () => {
 export const saveTripDetails = async (name, date, details) => {
   const dbConnection = await db();
   return new Promise((resolve, reject) => {
-    dbConnection.executeSql('INSERT INTO Trips (name, date, details) VALUES (?, ?, ?)', [name, date, details])
+    dbConnection.executeSql('INSERT INTO Trips (name, date, details) VALUES (?, ?, ?)', [name, new Date(date).toISOString(), details])
       .then(([results]) => {
         console.log("Results", results);
         resolve(results);
@@ -57,6 +57,20 @@ export const saveTripDetails = async (name, date, details) => {
       });
   });
 };
+
+
+export const deleteTrip = async (tripId) => {
+  const dbConnection = await db();
+  return new Promise((resolve, reject) => {
+    dbConnection.executeSql(
+        'DELETE FROM trips WHERE id = ?;',
+        [tripId],
+        (_, result) => resolve(result),
+        (_, error) => reject(error)
+      );
+  });
+};
+
 
 export const fetchTrips = async () => {
   const dbConnection = await db();
