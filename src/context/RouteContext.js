@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 // Define the initial state for route details
 const initialRouteDetails = {
@@ -31,6 +31,7 @@ export const RouteProvider = ({ children }) => {
     const [routeDetails, setRouteDetails] = useState(initialRouteDetails);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [tripInfo, setTripInfo] = useState(initialTripInfo);
+    const [sortedStops, setSortedStops] = useState([]);
     const saveTrip = (tripDetails) => {
         setRouteDetails(prevDetails => ({
             ...prevDetails,
@@ -46,9 +47,13 @@ export const RouteProvider = ({ children }) => {
             setCurrentLocation,
             tripInfo,
             setTripInfo,
+            sortedStops,
+            setSortedStops,
             saveTrip
         }}>
             {children}
         </RouteContext.Provider>
     );
 };
+
+export const useRouteContext = () => useContext(RouteContext);

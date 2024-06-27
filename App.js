@@ -11,6 +11,7 @@ import Navigation from './src/navigation';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { RouteProvider } from './src/context/RouteContext';
 import { LogBox } from 'react-native';
+import MapScreen from './src/screens/MapScreen';
 
 LogBox.ignoreAllLogs();
 
@@ -22,7 +23,9 @@ GoogleSignin.configure({
 const App = () => {
   return (
     <SafeAreaView style={styles.root}>
-      <RouteProvider><Navigation /></RouteProvider>
+      <RouteProvider>
+        <Navigation />
+      </RouteProvider>
     </SafeAreaView>
   );
 }

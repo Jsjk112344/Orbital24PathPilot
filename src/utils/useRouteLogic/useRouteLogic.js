@@ -1,11 +1,12 @@
 import { useState, useContext } from 'react';
 import { Alert } from 'react-native';
-import { RouteContext } from '../../context/RouteContext';
+import { useRouteContext, RouteContext } from '../../context/RouteContext';
 import { fetchRoutes, decodePolylines, parseRouteResponses } from '../apiUtils/apiUtils'
 import { sortStops } from '../SortStop/SortStop'
 
 const useRouteLogic = () => {
     const { setRouteDetails, currentLocation } = useContext(RouteContext);
+    const { sortedStops, setSortedStops } = useRouteContext();
     const [stops, setStops] = useState([]);
     const [region, setRegion] = useState({
         latitude: 1.3521,  // Default to Singapore
@@ -20,8 +21,9 @@ const useRouteLogic = () => {
             return;
         }
         try {
-            const sortedStops = await sortStops(stops); // Ensure this function is correctly defined/imported
-            const responses = await fetchRoutes(sortedStops, 'transit');
+            const sorted = await sortStops(stops); // Ensure this function is correctly defined/imported
+            setSortedStops(sorted);
+            const responses = await fetchRoutes(sorted, 'transit');
             const allTransitDetails = parseRouteResponses(responses);
             const polylineCoordinates = decodePolylines(responses);
 

@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import { RouteContext } from '../../context/RouteContext'; 
+import { RouteContext } from '../../context/RouteContext';
+import { useRouteContext } from '../../context/RouteContext'; 
 
 const MapScreen = () => {
+    const { sortedStops } = useRouteContext();
     const { routeDetails, setCurrentLocation } = useContext(RouteContext);
     const [currentRegion, setCurrentRegion] = useState({
         latitude: 1.3521,  // Center on Singapore
@@ -78,12 +80,13 @@ const MapScreen = () => {
                         strokeColor="red"
                     />
                 )}
-                {routeDetails.coordinates.length > 0 && (
-                    <>
-                        <Marker coordinate={routeDetails.coordinates[0]} title="Start" />
-                        <Marker coordinate={routeDetails.coordinates[routeDetails.coordinates.length - 1]} title="End" />
-                    </>
-                )}
+                {sortedStops.map((stop, index) => (
+                    <Marker
+                        key = {index}
+                        coordinate={{latitude: stop.latitude, longitude: stop.longitude}}
+                        title={`Stop ${index + 1}`}
+                    />
+                ))}
                 {userLocation && (
                     <Marker
                         coordinate={userLocation}
