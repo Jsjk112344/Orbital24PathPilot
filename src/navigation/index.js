@@ -17,6 +17,7 @@ import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import NewTrip from "../screens/NewTrip";
 import InputStops from "../screens/InputStops";
 import TripView from "../screens/TripView/TripView";
+import EditProfileScreen from "../screens/EditProfileScreen/EditProfileScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,6 +57,7 @@ function ProfileStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
     </Stack.Navigator>
   );
 }

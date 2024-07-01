@@ -1,4 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
+import Navigation from '../../navigation';
 
 SQLite.enablePromise(true);
 
@@ -23,10 +24,10 @@ export const db = () => {
         if (results.rows.length === 0) {
           db.executeSql('CREATE TABLE IF NOT EXISTS Trips (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id VARCHAR(50), name VARCHAR(30), date VARCHAR(30), details TEXT)')
           .then(() => {
-            console.log("Table created successfully");
+            console.log("Trips table created successfully");
             resolve(db);
           }).catch((error) => {
-            console.log("Received error: ", error);
+            console.log("Received error while creating Trips table: ", error);
             reject(error);
           });
         } else {
@@ -42,27 +43,46 @@ export const db = () => {
             if (!userIdColumnExists) {
               db.executeSql('ALTER TABLE Trips ADD COLUMN user_id VARCHAR(50);')
               .then(() => {
-                console.log("Column added successfully");
+                console.log("Column user_id added successfully");
                 resolve(db);
               }).catch((error) => {
-                console.log("Error adding column: ", error);
+                console.log("Error adding user_id column: ", error);
                 reject(error);
               });
             } else {
               resolve(db);
             }
           }).catch((error) => {
-            console.log("Error checking table info: ", error);
+            console.log("Error checking Trips table info: ", error);
             reject(error);
           });
         }
       }).catch((error) => {
-        console.log("Error checking table existence: ", error);
+        console.log("Error checking Trips table existence: ", error);
         reject(error);
       });
+
+      // Ensure the UserProfile table is created
+      db.executeSql(`
+        CREATE TABLE IF NOT EXISTS UserProfile (
+          user_id VARCHAR(50) PRIMARY KEY,
+          biography TEXT,
+          socialWork TEXT
+        );
+      `)
+      .then(() => {
+        console.log("UserProfile table created successfully");
+        resolve(db);
+      })
+      .catch(error => {
+        console.log("Error creating UserProfile table: ", error);
+        reject(error);
+      });
+
     })
     .catch(error => {
-      console.log(error);
+      console.log("Error opening database: ", error);
+      reject(error);
     });
   });
 };
@@ -72,11 +92,11 @@ export const saveTripDetails = async (userId, name, date, details) => {
   return new Promise((resolve, reject) => {
     dbConnection.executeSql('INSERT INTO Trips (user_id, name, date, details) VALUES (?, ?, ?, ?)', [userId, name, date, details])
       .then(([results]) => {
-        console.log("Results", results);
+        console.log("Trip details saved successfully", results);
         resolve(results);
       })
       .catch((error) => {
-        console.log("Received error: ", error);
+        console.log("Error saving trip details: ", error);
         reject(error);
       });
   });
@@ -94,7 +114,7 @@ export const fetchTrips = async (userId) => {
         resolve(data);
       })
       .catch((error) => {
-        console.log("Received error: ", error);
+        console.log("Error fetching trips: ", error);
         reject(error);
       });
   });
@@ -112,7 +132,7 @@ export const fetchTripById = async (tripId) => {
         }
       })
       .catch((error) => {
-        console.log("Received error: ", error);
+        console.log("Error fetching trip by ID: ", error);
         reject(error);
       });
   });
@@ -123,6 +143,70 @@ export const deleteTrip = async (tripId) => {
   return new Promise((resolve, reject) => {
     dbConnection.executeSql('DELETE FROM Trips WHERE id = ?', [tripId])
       .then((result) => resolve(result))
-      .catch((error) => reject(error));
+      .catch((error) => {
+        console.log("Error deleting trip: ", error);
+        reject(error);
+      });
+  });
+};
+
+// Ensure the UserProfile table is created
+export const setupUserProfileTable = async () => {
+  const dbConnection = await db();
+  return new Promise((resolve, reject) => {
+    dbConnection.executeSql(`
+      CREATE TABLE IF NOT EXISTS UserProfile (
+        user_id VARCHAR(50) PRIMARY KEY,
+        biography TEXT,
+        socialWork TEXT
+      );
+    `)
+    .then(() => {
+      console.log("UserProfile table created successfully");
+      resolve(dbConnection);
+    })
+    .catch(error => {
+      console.log("Error creating UserProfile table: ", error);
+      reject(error);
+    });
+  });
+};
+
+// Functions to handle UserProfile CRUD operations
+export const saveUserProfile = async (userId, biography, socialWork) => {
+  const dbConnection = await db();
+  
+  return new Promise((resolve, reject) => {
+    dbConnection.executeSql(
+      'INSERT OR REPLACE INTO UserProfile (user_id, biography, socialWork) VALUES (?, ?, ?);',
+      [userId, biography, socialWork]
+    )
+    .then(([results]) => {
+      console.log("UserProfile updated successfully", results);
+      resolve(results);
+    })
+    .catch((error) => {
+      console.log("Error saving user profile: ", error);
+      reject(error);
+    });
+  });
+};
+
+
+export const fetchUserProfile = async (userId) => {
+  const dbConnection = await db();
+  return new Promise((resolve, reject) => {
+    dbConnection.executeSql('SELECT * FROM UserProfile WHERE user_id = ?', [userId])
+    .then(([results]) => {
+      if (results.rows.length > 0) {
+        resolve(results.rows.item(0));
+      } else {
+        reject(new Error('User profile not found'));
+      }
+    })
+    .catch((error) => {
+      console.log("Error fetching user profile: ", error);
+      reject(error);
+    });
   });
 };
