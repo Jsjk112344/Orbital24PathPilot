@@ -18,6 +18,7 @@ const InputStops = () => {
     const handleFetchRoute = async () => {
         try {
             const result = await fetchAndSetRoute(); // Assume fetchAndSetRoute resolves to a result indicating success/failure
+            
             if (result.success) { // Check if the function was successful
                 navigation.navigate('NewTrip', { tripName, date: new Date() }); // Navigate only if successful
             } else {

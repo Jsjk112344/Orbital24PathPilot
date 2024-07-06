@@ -21,8 +21,11 @@ const useRouteLogic = () => {
             return;
         }
         try {
+            console.log("STOPS", stops);
             const sorted = await sortStops(stops); // Ensure this function is correctly defined/imported
+            console.log("SORTED STOPS", sorted);
             setSortedStops(sorted);
+
             const responses = await fetchRoutes(sorted, 'transit');
             const allTransitDetails = parseRouteResponses(responses);
             const polylineCoordinates = decodePolylines(responses);
