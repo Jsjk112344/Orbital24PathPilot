@@ -18,13 +18,15 @@ const TransitDetails = ({ details }) => {
                     </Text>
                     {leg.steps.map((step, stepIndex) => {
                         const modifiedInstructions = step.instructions.replace('Subway', 'MRT');
+                        
+                        console.log("Your details", step.transit_details) //remove pls after
                         const vehicle = step.transit_details?.vehicle?.type;
                         let detailedInstructions = modifiedInstructions;
 
                         if (vehicle === 'BUS' && step.transit_details?.line?.short_name) {
                             detailedInstructions += ` (Bus numbers: ${step.transit_details.line.short_name})`;
                         }
-                        console.log("i want ", step.transit_details);
+
                         return (
                             <View key={stepIndex} style={styles.stepContainer}>
                                 <Text style={styles.instructions}>
@@ -42,9 +44,14 @@ const TransitDetails = ({ details }) => {
                                                 <Icon name="flag-checkered" type="material-community" color="#517fa4" /> Arrive at: {step.transit_details.arrival_stop}
                                             </Text>
                                         )}
-                                        {step.transit_details.line && (
+                                        {step.transit_details.line && step.transit_details.line.short_name && (
                                             <Text style={styles.transitText}>
-                                                <Icon name="bus" type="material-community" color="#517fa4" /> Line: {step.transit_details.line}
+                                                <Icon name="bus" type="material-community" color="#517fa4" /> Bus Number: {step.transit_details.line.short_name}
+                                            </Text>
+                                        )}
+                                        {step.transit_details.line && step.transit_details.line.name && (
+                                            <Text style={styles.transitText}>
+                                                <Icon name="bus" type="material-community" color="#517fa4" /> Line: {step.transit_details.line.name}
                                             </Text>
                                         )}
                                         {step.transit_details.vehicle && (
