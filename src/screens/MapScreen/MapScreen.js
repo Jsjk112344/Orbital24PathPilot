@@ -4,6 +4,11 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import { RouteContext } from '../../context/RouteContext';
 import { useRouteContext } from '../../context/RouteContext'; 
+import { Image } from 'react-native-elements';
+import arrow from '../../../assets/images/location_arrow.png';
+import { magnetometer, SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
+
+setUpdateIntervalForType(SensorTypes.magnetometer, 500);
 
 const MapScreen = () => {
     const { sortedStops } = useRouteContext();
@@ -16,8 +21,11 @@ const MapScreen = () => {
     });
     const [userLocation, setUserLocation] = useState(null);
     const [region, setRegion] = useState(currentRegion);
+    const [heading, setHeading] = useState(0);
 
     useEffect(() => {
+        let watchId;
+
         const requestLocationPermission = async () => {
             if (Platform.OS === 'android') {
                 const granted = await PermissionsAndroid.request(
@@ -31,17 +39,17 @@ const MapScreen = () => {
                     }
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    getCurrentLocation();
+                    watchCurrentLocation();
                 } else {
                     console.log("Location permission denied");
                 }
             } else {
-                getCurrentLocation(); 
+                watchCurrentLocation(); 
             }
         };
 
-        const getCurrentLocation = async () => {
-            Geolocation.getCurrentPosition(
+        const watchCurrentLocation = async () => {
+            watchId = Geolocation.watchPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     setUserLocation({
@@ -59,11 +67,33 @@ const MapScreen = () => {
                 (error) => {
                     console.error("Geolocation error:", error);
                 },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+                { enableHighAccuracy: true, distanceFilter: 10, interval:500, fastestInterval: 500 }
             );
         };
 
+        const watchHeading = () => {
+            const subscription = magnetometer.subscribe(({ x, y, z }) => {
+                let angle = 0;
+                if (Math.atan2(y, x) >= 0) {
+                    angle = Math.atan2(y, x) * (180 / Math.PI);
+                } else {
+                    angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+                }
+                setHeading(angle);
+            });
+
+            return () => subscription.unsubscribe();
+        };
+
         requestLocationPermission();
+        const headingSubscription = watchHeading();
+
+        return () => {
+            if (watchId !== null) {
+                Geolocation.clearWatch(watchId);
+            }
+            headingSubscription();
+        };
     }, [setCurrentLocation]); 
 
     return (
@@ -91,7 +121,16 @@ const MapScreen = () => {
                     <Marker
                         coordinate={userLocation}
                         title="You are here"
-                    />
+                        anchor={{ x: 0.5, y: 0.5 }}
+                        rotation={heading}
+                        flat={true}
+                    >
+                        <Image
+                            source={arrow} // path to your custom arrow image
+                            style={{ width: 35, height: 35 }}
+                            resizeMode="contain"
+                        />
+                    </Marker>
                 )}
             </MapView>
         </View>
