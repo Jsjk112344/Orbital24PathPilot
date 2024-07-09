@@ -1,10 +1,10 @@
-// AscendDetails.js
+// ApexDetails.js
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Logo from '../../../assets/beneficiarylogos/Ascending_Hope_logo.jpg';
+import Logo from '../../../assets/beneficiarylogos/Club_logo.jpg';
 
-const AscendDetails = ({ navigation }) => {
+const WillingHeartsDetails = ({ navigation }) => {
     const handleBackPress = () => {
         navigation.goBack();
     };
@@ -15,26 +15,18 @@ const AscendDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Ascending Hope Community Services</Text>
+            <Text style={styles.name}>Apex Club of Bukit Timah</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://ascendinghope.org/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://apexbt.org/')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>admin@ascendinghope.org</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Icon name="phone" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>8218 3225</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
-                    <Text style={styles.infoText}>Central</Text>
+                    <Text style={styles.infoText}>apexbt@apex.org.sg</Text>
                 </View>
                 <Text style={styles.description}>
-                    We are a non-profit organization dedicated to helping problem gamblers and their family members overcome their problem, as well as reaching out to the needy and underprivileged community. We believe in taking action with urgency to raise public awareness about some of the most pressing issues facing today's society.
+                    Apex Club of Bukit Timah has been distributing groceries to elderly and low-income families living in rental housing in Redhill since 1988. Members typically conduct home interviews to assess if the Club is able to help. We will distribute every week on Saturday between 1-3pm. In the bag, there will be fresh fruits, vegetables, dry produce, and a loaf of bread.
                 </Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
@@ -49,15 +41,14 @@ const AscendDetails = ({ navigation }) => {
                         <Text style={styles.sectionHeader}>Delivery Information</Text>
                     </View>
                     <Text style={styles.sectionContent}>Collect from Distribution Point</Text>
-                    <Text style={styles.sectionContent}>Doorstep Delivery</Text>
                 </View>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="schedule" size={24} color="#517fa4" />
-                        <Text style={styles.sectionHeader}>Food Support Frequency</Text>
+                        <Text style={styles.sectionHeader}>Distribution Periods</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Cooked Meals - Weekly (1-3 times a week)</Text>
-                    <Text style={styles.sectionContent}>Fresh Produce - Monthly</Text>
+                    <Text style={styles.sectionContent}>Food Rations - Weekly</Text>
+                    <Text style={styles.sectionContent}>Fresh Produce - Weekly</Text>
                 </View>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
@@ -144,4 +135,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AscendDetails;
+export default WillingHeartsDetails;

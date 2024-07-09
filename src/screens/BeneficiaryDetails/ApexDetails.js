@@ -25,6 +25,10 @@ const ApexDetails = ({ navigation }) => {
                     <Icon name="email" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>apexbt@apex.org.sg</Text>
                 </View>
+                <View style={styles.infoRow}>
+                    <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
+                    <Text style={styles.infoText}>Central</Text>
+                </View>
                 <Text style={styles.description}>
                     Apex Club of Bukit Timah has been distributing groceries to elderly and low-income families living in rental housing in Redhill since 1988. Members typically conduct home interviews to assess if the Club is able to help. We will distribute every week on Saturday between 1-3pm. In the bag, there will be fresh fruits, vegetables, dry produce, and a loaf of bread.
                 </Text>
@@ -45,7 +49,7 @@ const ApexDetails = ({ navigation }) => {
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="schedule" size={24} color="#517fa4" />
-                        <Text style={styles.sectionHeader}>Distribution Periods</Text>
+                        <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
                     <Text style={styles.sectionContent}>Food Rations - Weekly</Text>
                     <Text style={styles.sectionContent}>Fresh Produce - Weekly</Text>

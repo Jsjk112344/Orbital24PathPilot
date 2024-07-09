@@ -23,10 +23,13 @@ import BeneficiaryListScreen from "../screens/BeneficiaryListScreen/BeneficiaryL
 // Import beneficiary detail screens
 import ApexDetails from "../screens/BeneficiaryDetails/ApexDetails";
 import AscendDetails from "../screens/BeneficiaryDetails/AscendDetails";
+import BlessedGraceDetails from "../screens/BeneficiaryDetails/BlessedGraceDetails";
+import ChengHongDetails from "../screens/BeneficiaryDetails/ChengHongDetails";
 import ClubRainbowDetails from "../screens/BeneficiaryDetails/ClubRainbowDetails";
 import EnDetails from "../screens/BeneficiaryDetails/EnDetails";
 import FilosDetails from "../screens/BeneficiaryDetails/FilosDetails";
 import FFTHDetails from "../screens/BeneficiaryDetails/FFTHDetails";
+import FFFADetails from "../screens/BeneficiaryDetails/FFFADetails";
 import LovingHeartDetails from "../screens/BeneficiaryDetails/LovingHeartDetails";
 
 const Stack = createNativeStackNavigator();
@@ -50,10 +53,13 @@ function PlanRouteStack() {
       <Stack.Screen name="BeneficiaryList" component={BeneficiaryListScreen} />
       <Stack.Screen name="ApexDetails" component={ApexDetails} />
       <Stack.Screen name="AscendDetails" component={AscendDetails} />
+      <Stack.Screen name="BlessedGraceDetails" component={BlessedGraceDetails} />
+      <Stack.Screen name="ChengHongDetails" component={ChengHongDetails} />
       <Stack.Screen name="ClubRainbowDetails" component={ClubRainbowDetails} />
       <Stack.Screen name="EnDetails" component={EnDetails} />
       <Stack.Screen name="FilosDetails" component={FilosDetails} />
       <Stack.Screen name="FFTHDetails" component={FFTHDetails} />
+      <Stack.Screen name="FFFADetails" component={FFFADetails} />
       <Stack.Screen name="LovingHeartDetails" component={LovingHeartDetails} />
       <Stack.Screen name="NewTrip" component={NewTrip} />
       <Stack.Screen name="InputStops" component={InputStops} />
