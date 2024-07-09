@@ -2,9 +2,9 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Logo from '../../../assets/beneficiarylogos/Ascending_Hope_logo.jpg';
+import Logo from '../../../assets/beneficiarylogos/HaoRenHaoShi_logo.png';
 
-const AscendDetails = ({ navigation }) => {
+const HaoRenHaoShiDetails = ({ navigation }) => {
     const handleBackPress = () => {
         navigation.goBack();
     };
@@ -15,27 +15,26 @@ const AscendDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Ascending Hope Community Services</Text>
+            <Text style={styles.name}>Food From the Heart Singapore</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://ascendinghope.org/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://www.foodfromtheheart.sg/')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>admin@ascendinghope.org</Text>
+                    <Text style={styles.infoText}>info@foodheart.org</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="phone" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>8218 3225</Text>
+                    <Text style={styles.infoText}>6280 4483</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
-                    <Text style={styles.infoText}>Central</Text>
+                    <Text style={styles.infoText}>Island-wide</Text>
                 </View>
                 <Text style={styles.description}>
-                    We are a non-profit organization dedicated to helping problem gamblers and their family members overcome their problem, as well as reaching out to the needy and underprivileged community. We believe in taking action with urgency to raise public awareness about some of the most pressing issues facing today's society.
-                </Text>
+                    Food From The Heart is a IPC-status food charity that feeds the needy in Singapore . Our food distribution programmes are run with sustainable charity in mind. This means that we are committed to providing continued food security to our beneficiaries for as long as they need it.                </Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="restaurant" size={24} color="#517fa4" />
@@ -56,18 +55,10 @@ const AscendDetails = ({ navigation }) => {
                         <Icon name="schedule" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Cooked Meals - Weekly (1-3 times a week)</Text>
-                    <Text style={styles.sectionContent}>Fresh Produce - Monthly</Text>
+                    <Text style={styles.sectionContent}>Monthly</Text>
+
                 </View>
-                <View style={styles.section}>
-                    <View style={styles.sectionHeaderContainer}>
-                        <Icon name="group" size={24} color="#517fa4" />
-                        <Text style={styles.sectionHeader}>Aid Recipients</Text>
-                    </View>
-                    <Text style={styles.sectionContent}>Low-income Families</Text>
-                    <Text style={styles.sectionContent}>Frail and/or homebound seniors</Text>
-                    <Text style={styles.sectionContent}>Persons with Disabilities</Text>
-                </View>
+
             </View>
         </ScrollView>
     );
@@ -144,4 +135,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AscendDetails;
+export default HaoRenHaoShiDetails;

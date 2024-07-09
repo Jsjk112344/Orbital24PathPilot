@@ -1,74 +1,85 @@
 // BeneficiaryCard.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import CustomButton from '../CustomButton';
 
-const BeneficiaryCard = ({ logo, name, halalStatus, deliveryType, distributionPeriods, onViewDetails }) => {
+const BeneficiaryCard = ({ logo, name, halalStatus, deliveryType, distributionPeriods, serviceRegion, onViewDetails }) => {
     return (
-        <View style={styles.cardContainer}>
+        <View style={styles.card}>
             <Image source={logo} style={styles.logo} />
-            <Text style={styles.name}>{name}</Text>
             <View style={styles.infoContainer}>
-                <Icon name="restaurant" type="material" color="#517fa4" />
-                <Text style={styles.infoText}>{halalStatus}</Text>
+                <Text style={styles.name}>{name}</Text>
+                <View style={styles.infoRow}>
+                    <Icon name="restaurant" size={24} color="#517fa4" />
+                    <Text style={styles.infoText}>{halalStatus}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <Icon name="local-shipping" size={24} color="#517fa4" />
+                    <Text style={styles.infoText}>{deliveryType}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <Icon name="schedule" size={24} color="#517fa4" />
+                    <Text style={styles.infoText}>{distributionPeriods}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />
+                    <Text style={styles.infoText}>{serviceRegion}</Text>
+                </View>
+                <CustomButton style={styles.button} onPress={onViewDetails} text="View Details" type="SECONDARY" />
+
             </View>
-            <View style={styles.infoContainer}>
-                <Icon name="local-shipping" type="material" color="#517fa4" />
-                <Text style={styles.infoText}>{deliveryType}</Text>
-            </View>
-            <View style={styles.infoContainer}>
-                <Icon name="schedule" type="material" color="#517fa4" />
-                <Text style={styles.infoText}>{distributionPeriods}</Text>
-            </View>
-            <CustomButton onPress={onViewDetails} type="SECONDARY" text={"View Details"}/>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    cardContainer: {
-        padding: 15,
-        marginBottom: 20,
-        borderRadius: 10,
+    card: {
+        flexDirection: 'row',
         backgroundColor: '#fff',
-        shadowColor: '#000',
+        borderRadius: 10,
+        padding: 20,
+        marginBottom: 20,
+        elevation: 3,  // Adds shadow on Android
+        shadowColor: '#000',  // Adds shadow on iOS
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     logo: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        alignSelf: 'center',
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginVertical: 10,
+        width: 80,
+        height: 80,
+        borderRadius: 10,
+        marginRight: 20,
     },
     infoContainer: {
+        flex: 1,
+    },
+    name: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    infoRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 5,
+        marginBottom: 10,
     },
     infoText: {
-        fontSize: 14,
+        fontSize: 16,
+        color: '#333',
         marginLeft: 10,
     },
-    detailsButton: {
+    button: {
         marginTop: 10,
+        backgroundColor: '#3B71F3',
         padding: 10,
-        backgroundColor: '#007bff',
         borderRadius: 5,
     },
-    detailsButtonText: {
+    buttonText: {
+        fontSize: 16,
         color: '#fff',
         textAlign: 'center',
-        fontWeight: 'bold',
     },
 });
 
