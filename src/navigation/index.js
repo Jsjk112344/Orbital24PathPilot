@@ -18,6 +18,16 @@ import NewTrip from "../screens/NewTrip";
 import InputStops from "../screens/InputStops";
 import TripView from "../screens/TripView/TripView";
 import EditProfileScreen from "../screens/EditProfileScreen/EditProfileScreen";
+import BeneficiaryListScreen from "../screens/BeneficiaryListScreen/BeneficiaryListScreen";
+
+// Import beneficiary detail screens
+import ApexDetails from "../screens/BeneficiaryDetails/ApexDetails";
+import AscendDetails from "../screens/BeneficiaryDetails/AscendDetails";
+import ClubRainbowDetails from "../screens/BeneficiaryDetails/ClubRainbowDetails";
+import EnDetails from "../screens/BeneficiaryDetails/EnDetails";
+import FilosDetails from "../screens/BeneficiaryDetails/FilosDetails";
+import FFTHDetails from "../screens/BeneficiaryDetails/FFTHDetails";
+import LovingHeartDetails from "../screens/BeneficiaryDetails/LovingHeartDetails";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,6 +47,14 @@ function PlanRouteStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="PlanRouteMain" component={RouteScreen} />
+      <Stack.Screen name="BeneficiaryList" component={BeneficiaryListScreen} />
+      <Stack.Screen name="ApexDetails" component={ApexDetails} />
+      <Stack.Screen name="AscendDetails" component={AscendDetails} />
+      <Stack.Screen name="ClubRainbowDetails" component={ClubRainbowDetails} />
+      <Stack.Screen name="EnDetails" component={EnDetails} />
+      <Stack.Screen name="FilosDetails" component={FilosDetails} />
+      <Stack.Screen name="FFTHDetails" component={FFTHDetails} />
+      <Stack.Screen name="LovingHeartDetails" component={LovingHeartDetails} />
       <Stack.Screen name="NewTrip" component={NewTrip} />
       <Stack.Screen name="InputStops" component={InputStops} />
       <Stack.Screen name="TripView" component={TripView} />
