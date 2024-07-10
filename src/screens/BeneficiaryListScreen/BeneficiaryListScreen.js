@@ -5,6 +5,7 @@ import BeneficiaryList from './BeneficiaryList';
 import { filterBeneficiaries } from '../../utils/FilterBeneficiaries/FilterBeneficiaries';
 import beneficiaries from './beneficiaries';
 import detailScreens from './detailScreen';
+import CustomButton from '../../components/CustomButton';
 
 const BeneficiaryListScreen = ({ navigation }) => {
     const [region, setRegion] = useState('all');
@@ -62,7 +63,7 @@ const BeneficiaryListScreen = ({ navigation }) => {
                             zIndex={3000}
                             zIndexInverse={1000}
                         />
-                        <Text style={styles.modalLabel}>Select Halal Status</Text>
+                        <Text style={styles.modalLabel}>Select Dietary Preferance</Text>
                         <DropDownPicker
                             open={openHalalStatus}
                             value={halalStatus}
@@ -93,12 +94,12 @@ const BeneficiaryListScreen = ({ navigation }) => {
                             zIndex={1000}
                             zIndexInverse={3000}
                         />
-                        <TouchableOpacity
+                        <CustomButton
                             onPress={() => setModalVisible(false)}
                             style={styles.applyButton}
-                        >
-                            <Text style={styles.buttonText}>Apply Filters</Text>
-                        </TouchableOpacity>
+                            text="Apply Filters"
+                        />
+                  
                     </View>
                 </View>
             </Modal>
