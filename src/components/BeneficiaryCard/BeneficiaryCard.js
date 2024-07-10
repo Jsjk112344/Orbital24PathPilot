@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: 'gray'
     },
     infoRow: {
         flexDirection: 'row',

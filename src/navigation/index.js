@@ -1,3 +1,4 @@
+// Navigation.js
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -19,6 +20,8 @@ import InputStops from "../screens/InputStops";
 import TripView from "../screens/TripView/TripView";
 import EditProfileScreen from "../screens/EditProfileScreen/EditProfileScreen";
 import BeneficiaryListScreen from "../screens/BeneficiaryListScreen/BeneficiaryListScreen";
+import HelpScreen from "../screens/HelpScreen/HelpScreen"; // Import the new HelpScreen
+import ChatScreen from "../screens/ChatScreen/ChatScreen";
 
 // Import beneficiary detail screens
 import ApexDetails from "../screens/BeneficiaryDetails/ApexDetails";
@@ -61,6 +64,8 @@ function PlanRouteStack() {
       <Stack.Screen name="FFTHDetails" component={FFTHDetails} />
       <Stack.Screen name="FFFADetails" component={FFFADetails} />
       <Stack.Screen name="LovingHeartDetails" component={LovingHeartDetails} />
+      <Stack.Screen name="Help" component={HelpScreen} />
+      <Stack.Screen name="Chat" component={ChatScreen} /> 
       <Stack.Screen name="NewTrip" component={NewTrip} />
       <Stack.Screen name="InputStops" component={InputStops} />
       <Stack.Screen name="TripView" component={TripView} />
@@ -119,6 +124,8 @@ const Navigation = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

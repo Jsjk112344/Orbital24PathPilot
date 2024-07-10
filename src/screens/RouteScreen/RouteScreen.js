@@ -45,7 +45,7 @@ const RouteScreen = () => {
     };
 
     const handleSOSPress = () => {
-        // Placeholder for SOS functionality
+        navigation.navigate('Help');
     };
 
     const showDisclaimer = () => {
@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 5,
+        color: "#999999"
     },
     taskDetails: {
         fontSize: 16,

@@ -6,7 +6,6 @@ const TransitDetails = ({ details }) => {
     if (!details || details.length === 0) {
         return <View><Text>No transit details available.</Text></View>;
     }
-
     return (
         <ScrollView style={styles.container}>
             {details.map((leg, index) => (
@@ -19,7 +18,7 @@ const TransitDetails = ({ details }) => {
                     {leg.steps.map((step, stepIndex) => {
                         const modifiedInstructions = step.instructions.replace('Subway', 'MRT');
                         
-                        console.log("Your details", step.transit_details) //remove pls after
+                      
                         const vehicle = step.transit_details?.vehicle?.type;
                         let detailedInstructions = modifiedInstructions;
 
@@ -36,7 +35,7 @@ const TransitDetails = ({ details }) => {
                                     <View style={styles.transitDetailsContainer}>
                                         {step.transit_details.departure_stop && (
                                             <Text style={styles.transitText}>
-                                                <Icon name="departure-board" type="material-community" color="#517fa4" /> Depart from: {step.transit_details.departure_stop}
+                                                <Icon name="bus-stop" type="material-community" color="#517fa4" /> Depart from: {step.transit_details.departure_stop}
                                             </Text>
                                         )}
                                         {step.transit_details.arrival_stop && (

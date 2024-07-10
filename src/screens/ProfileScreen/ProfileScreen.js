@@ -65,9 +65,8 @@ const ProfileScreen = () => {
         <Text style={styles.label}>Type of Social Work:</Text>
         <Text style={styles.value}>{profile.socialWork}</Text>
       </View>
-      <CustomButton onPress={handleChangePassword} type="SECONDARY" text={"Change Password"}/>
-
-      <CustomButton onPress={handleSignOut} type="TERTIARY" text={"Sign Out"}/>
+      <CustomButton onPress={handleChangePassword} type="SECONDARY" text={"Change Password"} />
+      <CustomButton onPress={handleSignOut} type="TERTIARY" text={"Sign Out"} />
     </View>
   );
 };
@@ -76,6 +75,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f8f8f8', // Set a background color for better contrast
   },
   header: {
     alignItems: 'center',
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#333', // Explicitly setting the text color
   },
   editButton: {
     padding: 10,
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   editButtonText: {
-    color: '#000',
+    color: '#000', // Explicitly setting the text color
   },
   info: {
     marginTop: 20,
@@ -104,10 +105,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333', // Explicitly setting the text color
   },
   value: {
     fontSize: 16,
     marginBottom: 10,
+    color: '#666', // Explicitly setting the text color
   },
   button: {
     marginTop: 20,
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color: '#fff', // Explicitly setting the text color
     fontSize: 16,
     fontWeight: 'bold',
   },
