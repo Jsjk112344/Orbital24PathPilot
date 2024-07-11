@@ -1,14 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid } from 'react-native';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid, Text } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import { RouteContext } from '../../context/RouteContext';
 import { useRouteContext } from '../../context/RouteContext'; 
 import { Image } from 'react-native-elements';
 import arrow from '../../../assets/images/location_arrow.png';
+import InstructionOverlay from '../../components/InstructionOverlay/InstructionOverlay'; // Import the overlay component
 import { magnetometer, SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
+import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
 
-setUpdateIntervalForType(SensorTypes.magnetometer, 500);
+setUpdateIntervalForType(SensorTypes.magnetometer, 1000);
 
 const MapScreen = () => {
     const { sortedStops } = useRouteContext();
@@ -96,6 +98,8 @@ const MapScreen = () => {
         };
     }, [setCurrentLocation]); 
 
+    const instructions = routeDetails.instructions || ["No instructions available"];
+
     return (
         <View style={styles.container}>
             <MapView
@@ -133,6 +137,10 @@ const MapScreen = () => {
                     </Marker>
                 )}
             </MapView>
+            <BottomDrawer>
+                <View></View>
+            </BottomDrawer>
+            
         </View>
     );
 };
@@ -140,7 +148,7 @@ const MapScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
+	},
     map: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,

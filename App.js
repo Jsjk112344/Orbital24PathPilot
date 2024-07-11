@@ -12,6 +12,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { RouteProvider } from './src/context/RouteContext';
 import { LogBox } from 'react-native';
 import MapScreen from './src/screens/MapScreen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 LogBox.ignoreAllLogs();
 
@@ -24,7 +25,9 @@ const App = () => {
   return (
     <SafeAreaView style={styles.root}>
       <RouteProvider>
-        <Navigation />
+        <GestureHandlerRootView style={{flex: 1}}>
+          <Navigation />
+        </GestureHandlerRootView>
       </RouteProvider>
     </SafeAreaView>
   );
