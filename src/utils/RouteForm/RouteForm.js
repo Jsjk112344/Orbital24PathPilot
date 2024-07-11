@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import CustomButton from '../../components/CustomButton';
-import { RouteContext } from '../../context/RouteContext'; 
+import { RouteContext } from '../../context/RouteContext';
 
 const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
     const { currentLocation } = useContext(RouteContext); // Use the context to get the current location
@@ -47,6 +47,13 @@ const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
                 styles={{
                     textInputContainer: styles.inputContainer,
                     textInput: styles.textInput,
+                    description: styles.description, // Ensures the color of the suggested place names is consistent
+                    predefinedPlacesDescription: {
+                        color: '#1faadb',
+                    },
+                }}
+                textInputProps={{
+                    placeholderTextColor: '#888888', // Explicitly setting the placeholder text color
                 }}
             />
             <CustomButton text="Use My Location" onPress={handleUseMyLocation} />
@@ -71,6 +78,7 @@ const styles = StyleSheet.create({
     },
     stopLabel: {
         flex: 1,
+        color: '#333', // Explicitly setting the text color
     },
     inputContainer: {
         padding: 0,
@@ -82,6 +90,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 10,
+        color: '#333', // Explicitly setting the text color
+    },
+    description: {
+        color: '#333', // Ensuring the color of the suggested place names is consistent
     },
 });
 

@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { RouteContext } from '../../context/RouteContext';
-import CustomInput from '../../components/CustomInput';
 
 const DateTimeForm = () => {
     const { tripInfo, setTripInfo } = useContext(RouteContext);
@@ -48,9 +47,10 @@ const DateTimeForm = () => {
                 onChangeText={handleNameChange}
                 value={tripInfo.tripName}
                 placeholder="Enter Trip Name"
+                placeholderTextColor="#999999" // Explicitly setting the placeholder text color
             />
             <TouchableOpacity onPress={showDatePicker} style={styles.input}>
-                <Text>Date of Trip: {tripInfo.tripDate.toLocaleDateString()}</Text>
+                <Text style={styles.text}>Date of Trip: {tripInfo.tripDate.toLocaleDateString()}</Text>
             </TouchableOpacity>
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
@@ -60,7 +60,7 @@ const DateTimeForm = () => {
             />
 
             <TouchableOpacity onPress={showTimePicker} style={styles.input}>
-                <Text>Start Time: {tripInfo.tripTime.toLocaleTimeString()}</Text>
+                <Text style={styles.text}>Start Time: {tripInfo.tripTime.toLocaleTimeString()}</Text>
             </TouchableOpacity>
             <DateTimePickerModal
                 isVisible={isTimePickerVisible}
@@ -80,7 +80,11 @@ const styles = StyleSheet.create({
     input: {
         padding: 10,
         backgroundColor: '#ddd',
-        marginBottom: 10
+        marginBottom: 10,
+        borderRadius: 5, // Adding border radius for better aesthetics
+    },
+    text: {
+        color: '#333333', // Explicitly setting the text color
     }
 });
 

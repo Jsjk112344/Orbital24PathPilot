@@ -46,7 +46,7 @@ const MyTripsScreen = () => {
       <View style={styles.tripItem}>
         <TouchableOpacity onPress={() => handleSelectTrip(item)} style={styles.item}>
           <Text style={styles.title}>{item.name}</Text>
-          <Text>{tripDate.toLocaleDateString()}</Text>
+          <Text style={styles.dateText}>{tripDate.toLocaleDateString()}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleDeleteTrip(item.id)} style={styles.deleteButton}>
           <Text style={styles.deleteButtonText}>Delete</Text>
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: '#f8f8f8', // Set a background color for better contrast
   },
   tripItem: {
     flexDirection: 'row',
@@ -80,6 +81,14 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomWidth: 1,
     borderColor: '#ccc',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginBottom: 10,
+    elevation: 2, // Adds shadow on Android
+    shadowColor: '#000', // Adds shadow on iOS
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   item: {
     flex: 1,
@@ -87,6 +96,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333', // Explicitly setting the text color
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#666', // Explicitly setting the text color
   },
   deleteButton: {
     backgroundColor: 'red',
@@ -94,15 +108,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   deleteButtonText: {
-    color: 'white',
+    color: 'white', // Explicitly setting the text color
   },
   refreshButton: {
     backgroundColor: '#ddd',
     padding: 10,
     marginBottom: 10,
+    borderRadius: 5,
   },
   refreshButtonText: {
-    color: '#000',
+    color: '#000', // Explicitly setting the text color
     fontWeight: 'bold',
     textAlign: 'center',
   },
