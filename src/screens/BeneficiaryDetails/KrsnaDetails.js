@@ -2,9 +2,9 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Logo from '../../../assets/beneficiarylogos/realm_logo.jpg';
+import Logo from '../../../assets/beneficiarylogos/krsna_logo.png';
 
-const RealmDetails = ({ navigation }) => {
+const KrsnaDetails = ({ navigation }) => {
     const handleBackPress = () => {
         navigation.goBack();
     };
@@ -15,26 +15,26 @@ const RealmDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Realm of Tranquility</Text>
+            <Text style={styles.name}>KRSNA'S FREE MEALS</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://realmoftranquility.com/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://www.facebook.com/krsnasfreemeals')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>chooimy66@gmail.com</Text>
+                    <Text style={styles.infoText}>admin@krsnasfreemeals.org</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="phone" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>9632 7668</Text>
+                    <Text style={styles.infoText}>9628 2045</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
-                    <Text style={styles.infoText}>Island-wide</Text>
+                    <Text style={styles.infoText}>North-East</Text>
                 </View>
                 <Text style={styles.description}>
-                Realm of Tranquility was established since 1978. It encourages good deeds for the benefit of all and believes in the power of community to change lives, to bring people together across all cultures, religions, and languages. Life-long volunteerism has been encouraged to benefit both the community and the volunteers. Realm of Tranquility strives to nurture social responsibility and personal growth.</Text>
+                Krsna's Free Meals is a soup kitchen in Singapore run by like-minded volunteers who are compassionate and determined to serve those in need. Krsna's Free Meals serves free breakfast and lunch daily. We prepare pure vegetarian* meals for needy Singaporeans! We currently serve about 2,000 meals per day to migrant workers and underprivileged locals. (*Does not contain onion or garlic)</Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="restaurant" size={24} color="#517fa4" />
@@ -55,7 +55,8 @@ const RealmDetails = ({ navigation }) => {
                         <Icon name="schedule" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Food Rations - Weekly</Text>
+                    <Text style={styles.sectionContent}>Cooked Meals - Daily (4-7 times a week)</Text>
+                    <Text style={styles.sectionContent}>Fresh Produce - Weekly (1-3 times a week)</Text>
 
 
                 </View>
@@ -65,8 +66,12 @@ const RealmDetails = ({ navigation }) => {
                         <Text style={styles.sectionHeader}>Aid Recipients</Text>
                     </View>
                     <Text style={styles.sectionContent}>Low-income Families</Text>
-                    <Text style={styles.sectionContent}>Frail and/or homebound seniors</Text>
+                    <Text style={styles.sectionContent}>Seniors</Text>
+                    <Text style={styles.sectionContent}>Persons with Disabilities</Text>
+                    <Text style={styles.sectionContent}>Others: Migrant Workers</Text>
+
                 </View>
+
             </View>
         </ScrollView>
     );
@@ -143,4 +148,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RealmDetails;
+export default KrsnaDetails;

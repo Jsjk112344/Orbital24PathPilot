@@ -6,7 +6,7 @@ import { RouteContext } from '../../context/RouteContext';
 import { useRouteContext } from '../../context/RouteContext'; 
 import { Image } from 'react-native-elements';
 import arrow from '../../../assets/images/location_arrow.png';
-import InstructionOverlay from '../../components/InstructionOverlay/InstructionOverlay'; // Import the overlay component
+// import InstructionOverlay from '../../components/InstructionOverlay/InstructionOverlay'; // Import the overlay component
 import { magnetometer, SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
 import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
 

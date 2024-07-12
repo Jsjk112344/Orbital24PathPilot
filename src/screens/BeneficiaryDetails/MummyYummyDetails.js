@@ -15,22 +15,26 @@ const MummyYummyDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Ascending Hope Community Services</Text>
+            <Text style={styles.name}>Mummy Yummy</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://www.bgss.org.sg/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://m.facebook.com/pages/category/vegetarian-vegan-restaurant/mummy-yummy-singapore-679826295399303')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>info@blessedgrace.org</Text>
+                    <Text style={styles.infoText}>mummyyummy21@gmail.com</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <Icon name="phone" size={24} color="#517fa4" />
+                    <Text style={styles.infoText}>6246 3558</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
-                    <Text style={styles.infoText}>East</Text>
+                    <Text style={styles.infoText}>Island-wide</Text>
                 </View>
                 <Text style={styles.description}>
-                    Blessed Grace Social Services is a non-profit organisation which specifically seeks to benefit the community by relieving human need, particularly in the recovery of people in gambling and narcotic addictions, the poor and the elderly.                </Text>
+                Mummy Yummy is a food distribution network which cooks and distributes free meals to those in need. Mummy Yummy distributes more than 30,000 meals to the needy across Singapore every month, with around 1000 meals distributed every day.</Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="restaurant" size={24} color="#517fa4" />
@@ -52,8 +56,7 @@ const MummyYummyDetails = ({ navigation }) => {
                         <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
                     <Text style={styles.sectionContent}>Cooked Meals - Daily</Text>
-                    <Text style={styles.sectionContent}>Food Rations - Monthly</Text>
-                    <Text style={styles.sectionContent}>Food Vouchers - Yearly</Text>
+                    
 
                 </View>
                 <View style={styles.section}>
@@ -63,6 +66,8 @@ const MummyYummyDetails = ({ navigation }) => {
                     </View>
                     <Text style={styles.sectionContent}>Low-income Families</Text>
                     <Text style={styles.sectionContent}>Frail and/or homebound seniors</Text>
+                    <Text style={styles.sectionContent}>Persons with disabilities</Text>
+
                 </View>
             </View>
         </ScrollView>

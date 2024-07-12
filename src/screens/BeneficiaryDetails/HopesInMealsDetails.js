@@ -2,9 +2,9 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Logo from '../../../assets/beneficiarylogos/realm_logo.jpg';
+import Logo from '../../../assets/beneficiarylogos/HopesInMeals_logo.jpeg';
 
-const RealmDetails = ({ navigation }) => {
+const HaoRenHaoShiDetails = ({ navigation }) => {
     const handleBackPress = () => {
         navigation.goBack();
     };
@@ -15,26 +15,23 @@ const RealmDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Realm of Tranquility</Text>
+            <Text style={styles.name}>Hopes In Meals</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://realmoftranquility.com/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://www.giving.sg/organisation/profile/ceda4487-ebe1-42de-b93e-d8598763f581')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>chooimy66@gmail.com</Text>
+                    <Text style={styles.infoText}>hopesinmeals@gmail.com</Text>
                 </View>
-                <View style={styles.infoRow}>
-                    <Icon name="phone" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>9632 7668</Text>
-                </View>
+
                 <View style={styles.infoRow}>
                     <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
-                    <Text style={styles.infoText}>Island-wide</Text>
+                    <Text style={styles.infoText}>Central</Text>
                 </View>
                 <Text style={styles.description}>
-                Realm of Tranquility was established since 1978. It encourages good deeds for the benefit of all and believes in the power of community to change lives, to bring people together across all cultures, religions, and languages. Life-long volunteerism has been encouraged to benefit both the community and the volunteers. Realm of Tranquility strives to nurture social responsibility and personal growth.</Text>
+                We aim to deliver food and companionship to those who need it most, such as the vulnerable, low income, elderly and children. We believe in spreading hope and helping others get back up after they have fallen.</Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="restaurant" size={24} color="#517fa4" />
@@ -47,7 +44,6 @@ const RealmDetails = ({ navigation }) => {
                         <Icon name="local-shipping" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Delivery Information</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Collect from Distribution Point</Text>
                     <Text style={styles.sectionContent}>Doorstep Delivery</Text>
                 </View>
                 <View style={styles.section}>
@@ -55,9 +51,8 @@ const RealmDetails = ({ navigation }) => {
                         <Icon name="schedule" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
+                    <Text style={styles.sectionContent}>Cooked Meals - Daily</Text>
                     <Text style={styles.sectionContent}>Food Rations - Weekly</Text>
-
-
                 </View>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
@@ -66,7 +61,9 @@ const RealmDetails = ({ navigation }) => {
                     </View>
                     <Text style={styles.sectionContent}>Low-income Families</Text>
                     <Text style={styles.sectionContent}>Frail and/or homebound seniors</Text>
+                    <Text style={styles.sectionContent}>Persons with Disabilities</Text>
                 </View>
+
             </View>
         </ScrollView>
     );
@@ -143,4 +140,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RealmDetails;
+export default HaoRenHaoShiDetails;

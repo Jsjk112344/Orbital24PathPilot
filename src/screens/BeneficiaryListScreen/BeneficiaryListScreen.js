@@ -55,6 +55,7 @@ const BeneficiaryListScreen = ({ navigation }) => {
                                 { label: 'Central', value: 'central' },
                                 { label: 'East', value: 'east' },
                                 { label: 'West', value: 'west' },
+                                { label: 'North-East', value: 'north-east' },
                                 { label: 'Island-wide', value: 'island-wide' },
                             ]}
                             setOpen={setOpenRegion}
@@ -63,7 +64,7 @@ const BeneficiaryListScreen = ({ navigation }) => {
                             zIndex={3000}
                             zIndexInverse={1000}
                         />
-                        <Text style={styles.modalLabel}>Select Dietary Preferance</Text>
+                        <Text style={styles.modalLabel}>Select Dietary Preference</Text>
                         <DropDownPicker
                             open={openHalalStatus}
                             value={halalStatus}
@@ -71,6 +72,7 @@ const BeneficiaryListScreen = ({ navigation }) => {
                                 { label: 'All', value: 'all' },
                                 { label: 'Halal', value: 'halal' },
                                 { label: 'Non-Halal', value: 'non-halal' },
+                                { label: 'Vegetarian', value: 'vegetarian' },
                             ]}
                             setOpen={setOpenHalalStatus}
                             setValue={setHalalStatus}

@@ -14,7 +14,7 @@ const KrsnaLogo = require('../../../assets/beneficiarylogos/krsna_logo.png');
 const LovingHeartLogo = require('../../../assets/beneficiarylogos/LovingHeart_logo.png');
 const MummyLogo = require('../../../assets/beneficiarylogos/mummy_logo.jpeg');
 const RealmLogo = require('../../../assets/beneficiarylogos/realm_logo.jpg');
-
+const MetroYMCALogo = require('../../../assets/beneficiarylogos/metro_ymca_logo.jpg');
 const beneficiaries = [
     {
         logo: ApexLogo,
@@ -28,7 +28,7 @@ const beneficiaries = [
         logo: AscendingLogo,
         name: 'Ascending Hope Community Services',
         halalStatus: 'Halal, Non-Halal',
-        deliveryType: 'Collect from Distribution Point \nDoorstep Delivery',
+        deliveryType: 'Collect from Distribution Point \nDoor Step Delivery',
         distributionPeriods: 'Cooked Meals - Weekly(1-3 times a week) \nFresh Produce - Monthly',
         serviceRegion: 'Central',
     },
@@ -36,7 +36,7 @@ const beneficiaries = [
         logo: BlessedGraceLogo,
         name: 'Blessed Grace Social Services Limited',
         halalStatus: 'Halal, Non-Halal',
-        deliveryType: 'Collect from Distribution Point \nDoorstep Delivery',
+        deliveryType: 'Collect from Distribution Point \nDoor Step Delivery',
         distributionPeriods: 'Cooked Meals - Daily\nFood Rations - Monthly\nFood Vouchers - Yearly',
         serviceRegion: 'East',
     },
@@ -44,7 +44,7 @@ const beneficiaries = [
         logo: ChengHongLogo,
         name: 'Cheng Hong Welfare Service Society',
         halalStatus: 'Halal',
-        deliveryType: 'Collect from Distribution Point \nDoorstep Delivery',
+        deliveryType: 'Collect from Distribution Point \nDoor Step Delivery',
         distributionPeriods: 'Cooked Meals - Daily\nFood Rations - Bi-monthly',
         serviceRegion: 'East',
     },
@@ -76,7 +76,7 @@ const beneficiaries = [
         logo: FFFALogo,
         name: 'Free Food For All',
         halalStatus: 'Halal',
-        deliveryType: 'Door-step Delivery',
+        deliveryType: 'Door Step Delivery',
         distributionPeriods: 'Food Rations - Monthly',
         serviceRegion: 'Island-wide',
     },
@@ -89,12 +89,61 @@ const beneficiaries = [
         serviceRegion: 'East',
     },
     {
+        logo: HaoRenHaoShiLogo,
+        name: 'Hao Ren Hao Shi Limited',
+        halalStatus: 'Halal, Non-Halal, Vegetarian',
+        deliveryType: 'Collect From Distribution Point\nDoor Step Delivery',
+        distributionPeriods: 'Food Rations - Weekly',
+        serviceRegion: 'Island-wide',
+    },
+    {
+        logo: HopesInMealsLogo,
+        name: 'Hopes In Meals',
+        halalStatus: 'Halal, Non-Halal, Vegetarian',
+        deliveryType: 'Door Step Delivery',
+        distributionPeriods: 'Cooked Meals - Daily\nFood Rations - Weekly',
+        serviceRegion: 'Central',
+    },
+    {
+        logo: KrsnaLogo,
+        name: "KRSNA'S FREE MEALS",
+        halalStatus: 'Vegetarian',
+        deliveryType: 'Collect From Distribution Point',
+        distributionPeriods: 'Cooked Meals - Daily\nFresh Produce - Weekly',
+        serviceRegion: 'North-East',
+    },
+
+    {
         logo: LovingHeartLogo,
         name: 'Loving Heart Multi-Service Centre',
         halalStatus: 'Halal, Non-Halal',
         deliveryType: 'Door Step Delivery',
         distributionPeriods: 'Food Rations - Monthly \nFresh Produce - Monthly',
         serviceRegion: 'West',
+    },
+    {
+        logo: MetroYMCALogo,
+        name: 'Metropolitan YMCA Singapore',
+        halalStatus: 'Halal',
+        deliveryType: 'Collect From Distribution Point\nDoor Step Delivery',
+        distributionPeriods: 'Food Rations - Monthly',
+        serviceRegion: 'Central',
+    },
+    {
+        logo: MummyLogo,
+        name: 'Mummy Yummy',
+        halalStatus: 'Vegetarian',
+        deliveryType: 'Door Step Delivery',
+        distributionPeriods: 'Cooked Meals - Daily',
+        serviceRegion: 'Island-wide',
+    },
+    {
+        logo: RealmLogo,
+        name: 'Realm of Tranquility',
+        halalStatus: 'Halal',
+        deliveryType: 'Door Step Delivery',
+        distributionPeriods: 'Food Rations - Weekly',
+        serviceRegion: 'Island-wide',
     },
 ];
 

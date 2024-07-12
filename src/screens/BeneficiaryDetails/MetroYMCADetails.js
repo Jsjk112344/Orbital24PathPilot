@@ -2,9 +2,9 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Logo from '../../../assets/beneficiarylogos/realm_logo.jpg';
+import Logo from '../../../assets/beneficiarylogos/metro_ymca_logo.jpg';
 
-const RealmDetails = ({ navigation }) => {
+const MetroYMCADetails = ({ navigation }) => {
     const handleBackPress = () => {
         navigation.goBack();
     };
@@ -15,32 +15,32 @@ const RealmDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Realm of Tranquility</Text>
+            <Text style={styles.name}>Metropolitan YMCA Singapore</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://realmoftranquility.com/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('mymca.org.sg')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>chooimy66@gmail.com</Text>
+                    <Text style={styles.infoText}>mymanna@mymca.org.sg</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="phone" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>9632 7668</Text>
+                    <Text style={styles.infoText}>6746 3742</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
-                    <Text style={styles.infoText}>Island-wide</Text>
+                    <Text style={styles.infoText}>Central</Text>
                 </View>
                 <Text style={styles.description}>
-                Realm of Tranquility was established since 1978. It encourages good deeds for the benefit of all and believes in the power of community to change lives, to bring people together across all cultures, religions, and languages. Life-long volunteerism has been encouraged to benefit both the community and the volunteers. Realm of Tranquility strives to nurture social responsibility and personal growth.</Text>
+                    One of the community service programme in Metropolitan YMCA is the M.Y Manna Programme. It is a food ration programmes aims to serve the low income and vulnerable community groups in Singapore. It aims to support the family in their Physicological needs through the monthly food ration and Social-Emotional needs through befrienders.</Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="restaurant" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Dietary Preferences</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Halal, Non-Halal</Text>
+                    <Text style={styles.sectionContent}>Halal</Text>
                 </View>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
@@ -55,8 +55,7 @@ const RealmDetails = ({ navigation }) => {
                         <Icon name="schedule" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Food Rations - Weekly</Text>
-
+                    <Text style={styles.sectionContent}>Food Rations - Monthly</Text>
 
                 </View>
                 <View style={styles.section}>
@@ -64,9 +63,9 @@ const RealmDetails = ({ navigation }) => {
                         <Icon name="group" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Aid Recipients</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Low-income Families</Text>
-                    <Text style={styles.sectionContent}>Frail and/or homebound seniors</Text>
+                    <Text style={styles.sectionContent}>Low income vulnerable community - must be referred by SSA</Text>
                 </View>
+
             </View>
         </ScrollView>
     );
@@ -143,4 +142,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RealmDetails;
+export default MetroYMCADetails;

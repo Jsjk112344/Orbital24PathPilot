@@ -15,32 +15,32 @@ const HaoRenHaoShiDetails = ({ navigation }) => {
                 <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
             <Image source={Logo} style={styles.logo} />
-            <Text style={styles.name}>Food From the Heart Singapore</Text>
+            <Text style={styles.name}>Hao Ren Hao Shi Limited</Text>
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://www.foodfromtheheart.sg/')}>
+                <TouchableOpacity style={styles.infoRow} onPress={() => Linking.openURL('https://www.haorenhaoshi.org.sg/')}>
                     <Icon name="link" size={24} color="#517fa4" />
                     <Text style={styles.infoText}>Website</Text>
                 </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Icon name="email" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>info@foodheart.org</Text>
+                    <Text style={styles.infoText}>enquiry@hrhs.org.sg</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="phone" size={24} color="#517fa4" />
-                    <Text style={styles.infoText}>6280 4483</Text>
+                    <Text style={styles.infoText}>9058 5898</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Icon name="map-marker" type="material-community" size={24} color="#517fa4" />                    
                     <Text style={styles.infoText}>Island-wide</Text>
                 </View>
                 <Text style={styles.description}>
-                    Food From The Heart is a IPC-status food charity that feeds the needy in Singapore . Our food distribution programmes are run with sustainable charity in mind. This means that we are committed to providing continued food security to our beneficiaries for as long as they need it.                </Text>
+                    Hao Ren Hao Shi is a non profit, non sectarian charity founded by Mr Anson Ng, recognised with both 2022 Singaporean of the year & 2021 Silent Hero Awards. While serving 1500 needly families monthly across Singapore, our main distribution & mobile charity initiatives also introduces volunteerism to school children, young adults & families. </Text>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
                         <Icon name="restaurant" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Dietary Preferences</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Halal, Non-Halal</Text>
+                    <Text style={styles.sectionContent}>Halal, Non-Halal, Vegetarian</Text>
                 </View>
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderContainer}>
@@ -55,7 +55,7 @@ const HaoRenHaoShiDetails = ({ navigation }) => {
                         <Icon name="schedule" size={24} color="#517fa4" />
                         <Text style={styles.sectionHeader}>Food Support Frequency</Text>
                     </View>
-                    <Text style={styles.sectionContent}>Monthly</Text>
+                    <Text style={styles.sectionContent}>Food Rations - Weekly (1-3 times a week)</Text>
 
                 </View>
 

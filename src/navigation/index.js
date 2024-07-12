@@ -33,8 +33,13 @@ import EnDetails from "../screens/BeneficiaryDetails/EnDetails";
 import FilosDetails from "../screens/BeneficiaryDetails/FilosDetails";
 import FFTHDetails from "../screens/BeneficiaryDetails/FFTHDetails";
 import FFFADetails from "../screens/BeneficiaryDetails/FFFADetails";
+import HopesInMealsDetails from "../screens/BeneficiaryDetails/HopesInMealsDetails"
+import HaoRenHaoShiDetails from "../screens/BeneficiaryDetails/HaoRenHaoShiDetails";
+import KrsnaDetails from "../screens/BeneficiaryDetails/KrsnaDetails";
+import MummyYummyDetails from "../screens/BeneficiaryDetails/MummyYummyDetails";
+import RealmDetails from "../screens/BeneficiaryDetails/RealmDetails";
 import LovingHeartDetails from "../screens/BeneficiaryDetails/LovingHeartDetails";
-
+import MetroYMCADetails from "../screens/BeneficiaryDetails/MetroYMCADetails";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -63,7 +68,13 @@ function PlanRouteStack() {
       <Stack.Screen name="FilosDetails" component={FilosDetails} />
       <Stack.Screen name="FFTHDetails" component={FFTHDetails} />
       <Stack.Screen name="FFFADetails" component={FFFADetails} />
+      <Stack.Screen name="HaoRenHaoShiDetails" component={HaoRenHaoShiDetails} />
+      <Stack.Screen name="HopesInMealsDetails" component={HopesInMealsDetails} />
+      <Stack.Screen name="KrsnaDetails" component={KrsnaDetails} />
       <Stack.Screen name="LovingHeartDetails" component={LovingHeartDetails} />
+      <Stack.Screen name="RealmDetails" component={RealmDetails} />
+      <Stack.Screen name="MummyYummyDetails" component={MummyYummyDetails} />
+      <Stack.Screen name="MetroYMCADetails" component={MetroYMCADetails} />
       <Stack.Screen name="Help" component={HelpScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} /> 
       <Stack.Screen name="NewTrip" component={NewTrip} />

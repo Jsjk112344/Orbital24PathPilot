@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
         marginBottom: 10,
         borderRadius: 5, // Adding border radius for better aesthetics
+        color: "black",
     },
     text: {
         color: '#333333', // Explicitly setting the text color

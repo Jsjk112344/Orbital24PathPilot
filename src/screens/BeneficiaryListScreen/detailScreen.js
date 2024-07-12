@@ -9,7 +9,13 @@ const detailScreens = {
     'Free Food For All': 'FFFADetails',
     'En Community Services Society': 'EnDetails',
     'Filos Community Services': 'FilosDetails',
+    'Hao Ren Hao Shi Limited': 'HaoRenHaoShiDetails',
+    'Hopes In Meals': 'HopesInMealsDetails',
+    "KRSNA'S FREE MEALS": 'KrsnaDetails',
     'Loving Heart Multi-Service Centre': 'LovingHeartDetails',
+    'Mummy Yummy': 'MummyYummyDetails',
+    'Realm of Tranquility' : "RealmDetails",
+    'Metropolitan YMCA Singapore' : "MetroYMCADetails",
 };
 
 export default detailScreens;
