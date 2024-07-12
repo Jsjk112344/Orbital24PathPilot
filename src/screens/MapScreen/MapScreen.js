@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid, Text } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
@@ -6,9 +6,10 @@ import { RouteContext } from '../../context/RouteContext';
 import { useRouteContext } from '../../context/RouteContext'; 
 import { Image } from 'react-native-elements';
 import arrow from '../../../assets/images/location_arrow.png';
-// import InstructionOverlay from '../../components/InstructionOverlay/InstructionOverlay'; // Import the overlay component
 import { magnetometer, SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
 import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
+import useRouteLogic from '../../utils/useRouteLogic/useRouteLogic';
+//import {getNextInstruction}
 
 setUpdateIntervalForType(SensorTypes.magnetometer, 1000);
 
@@ -24,6 +25,14 @@ const MapScreen = () => {
     const [userLocation, setUserLocation] = useState(null);
     const [region, setRegion] = useState(currentRegion);
     const [heading, setHeading] = useState(0);
+    //const [currentInstruction, setCurrentInstruction] = useState(' ');
+    const {fetchAndSetNextStop} = useRouteLogic()
+
+    const updateRoute = useCallback(async () => {
+        if (userLocation) {
+            await fetchAndSetNextStop(userLocation);
+        }
+    }, [userLocation, fetchAndSetNextStop]);
 
     useEffect(() => {
         let watchId;
@@ -54,12 +63,13 @@ const MapScreen = () => {
             watchId = Geolocation.watchPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    setUserLocation({
+                    const newLocation = {
                         latitude,
                         longitude,
                         latitudeDelta: 0.005,
                         longitudeDelta: 0.005,
-                    });
+                    };
+                    setUserLocation(newLocation);
                     setCurrentLocation({
                         latitude,
                         longitude,
@@ -69,7 +79,7 @@ const MapScreen = () => {
                 (error) => {
                     console.error("Geolocation error:", error);
                 },
-                { enableHighAccuracy: true, distanceFilter: 10, interval:500, fastestInterval: 500 }
+                { enableHighAccuracy: true, distanceFilter: 10, interval: 500, fastestInterval: 500 }
             );
         };
 
@@ -98,6 +108,12 @@ const MapScreen = () => {
         };
     }, [setCurrentLocation]); 
 
+    useEffect(() => {
+        updateRoute();
+    }, [updateRoute]);
+
+    //include Claude suggestion for directions here
+
     const instructions = routeDetails.instructions || ["No instructions available"];
 
     return (
@@ -107,16 +123,25 @@ const MapScreen = () => {
                 region={userLocation || region}
                 onRegionChangeComplete={setRegion} // This updates the region as the user interacts with the map
             >
+                {
+                    <Polyline
+                        coordinates={routeDetails.nextStopCoords}
+                        strokeWidth={5}
+                        strokeColor='red'
+                    />
+                }
                 {routeDetails.coordinates.length > 0 && (
                     <Polyline
                         coordinates={routeDetails.coordinates}
                         strokeWidth={5}
                         strokeColor="red"
+                        lineDashPattern={[20,20]}
+                        
                     />
                 )}
                 {sortedStops.map((stop, index) => (
                     <Marker
-                        key = {index}
+                        key={index}
                         coordinate={{latitude: stop.latitude, longitude: stop.longitude}}
                         title={`Stop ${index + 1}`}
                     />
@@ -140,7 +165,6 @@ const MapScreen = () => {
             <BottomDrawer>
                 <View></View>
             </BottomDrawer>
-            
         </View>
     );
 };

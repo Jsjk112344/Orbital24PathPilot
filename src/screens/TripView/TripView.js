@@ -46,7 +46,7 @@ const TripView = () => {
     }
 
     const tripDate = Date(tripDetails.date);
-    console.log(tripDate);
+    console.log("TripView.js: " + tripDate);
     return (
         <View style={styles.container}>
             <View style={styles.header}>

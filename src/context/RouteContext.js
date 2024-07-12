@@ -7,6 +7,7 @@ const initialRouteDetails = {
     distance: '',
     duration: '',
     savedTrips: [],
+    nextStopCoords: [],
 };
 
 // Define the initial state for trip information
