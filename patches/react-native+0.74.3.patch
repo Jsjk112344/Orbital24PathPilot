@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native/Libraries/Network/XMLHttpRequest.js b/node_modules/react-native/Libraries/Network/XMLHttpRequest.js
+index e6191b1..589eb95 100644
+--- a/node_modules/react-native/Libraries/Network/XMLHttpRequest.js
++++ b/node_modules/react-native/Libraries/Network/XMLHttpRequest.js
+@@ -514,7 +514,7 @@ class XMLHttpRequest extends (EventTarget(...XHR_EVENTS): any) {
+ 
+   send(data: any): void {
+     if (this.readyState !== this.OPENED) {
+-      throw new Error('Request has not been opened');
++      console.warn('Request has not been opened');
+     }
+     if (this._sent) {
+       throw new Error('Request has already been sent');
