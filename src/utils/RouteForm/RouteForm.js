@@ -4,10 +4,13 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import CustomButton from '../../components/CustomButton';
 import { RouteContext } from '../../context/RouteContext';
 import useRouteLogic from '../useRouteLogic/useRouteLogic';
+import { NavigationProvider, useNavigationContext } from '../../context/NavigationProviderContext';
+import { useNavigation } from '@react-navigation/native';
 
 const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
     const { currentLocation } = useContext(RouteContext); // Use the context to get the current location
     const { setNextStopIndex, fetchAndSetNextStop } = useRouteLogic();
+    const { handleReachDestination } = useNavigationContext();
 
     const handleUseMyLocation = () => {
         if (currentLocation && !stops.some(stop => stop.label === currentLocation.label)) {
@@ -23,12 +26,13 @@ const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
 
     useEffect(() => {
         fetchAndSetNextStop(currentLocation);
-    }, [fetchAndSetNextStop,setNextStopIndex,]);
+    }, [fetchAndSetNextStop, setNextStopIndex,]);
 
     const handleCreateTrip = useCallback(() => {
         setNextStopIndex(1);
         fetchRoute(stops);
-    }, [setNextStopIndex, fetchRoute]);
+        handleReachDestination(false);
+    }, [setNextStopIndex, fetchRoute, handleReachDestination]);
 
     return (
         <View style={styles.container}>

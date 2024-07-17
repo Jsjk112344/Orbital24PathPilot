@@ -10,7 +10,7 @@ import { magnetometer, SensorTypes, setUpdateIntervalForType } from 'react-nativ
 import useRouteLogic from '../../utils/useRouteLogic/useRouteLogic';
 import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
 import { useBottomDrawer } from '../../context/BottomDrawerContext';
-//import { getNextInstruction } from '../../utils/navigationUtils/navigationUtils';
+import { useNavigationContext } from '../../context/NavigationProviderContext';
 
 setUpdateIntervalForType(SensorTypes.magnetometer, 1000);
 
@@ -23,21 +23,23 @@ const MapScreen = () => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
-    const [userLocation, setUserLocation] = useState(null);
+    //const [userLocation, setUserLocation] = useState(null);
     const [region, setRegion] = useState(currentRegion);
     const [heading, setHeading] = useState(0);
     const { setCurrentInstruction, setNextStopName } = useBottomDrawer();
     const { fetchAndSetNextStop, setNextStopIndex, nextStopIndex } = useRouteLogic();
 
-    const updateRoute = useCallback(async () => {
-        //console.log('updateRoute in MapScreen triggering started');
-        if (userLocation) {
-            //console.log('waiting for fetchAndSetNextStop');
-            await fetchAndSetNextStop(userLocation);
-            //setCurrentInstruction(routeDetails.nextStopDetails.steps);
-        }
-        //console.log('updateRoute in MapScreen triggered');
-    }, [userLocation, fetchAndSetNextStop]);
+    const { userLocation, setUserLocation, updateRoute, handleReachDestination } = useNavigationContext();
+
+    // const updateRoute = useCallback(async () => {
+    //     //console.log('updateRoute in MapScreen triggering started');
+    //     if (userLocation) {
+    //         //console.log('waiting for fetchAndSetNextStop');
+    //         await fetchAndSetNextStop(userLocation);
+    //         //setCurrentInstruction(routeDetails.nextStopDetails.steps);
+    //     }
+    //     //console.log('updateRoute in MapScreen triggered');
+    // }, [userLocation, fetchAndSetNextStop]);
 
     useEffect(() => {
         let watchId;
@@ -113,24 +115,26 @@ const MapScreen = () => {
         };
     }, [setCurrentLocation]); 
 
+    const handleReachDestinationHelper = handleReachDestination;
     useEffect(() => {
         updateRoute();
-    }, [updateRoute]);
+        //handleReachDestinationHelper(false);
+    }, [updateRoute, handleReachDestinationHelper]);
 
-    const handleReachDestination = useCallback(() => {
-        setNextStopIndex((prevIndex) => {
-            const newIndex = prevIndex + 1;
-            if (newIndex < sortedStops.length) {
-                updateRoute();
-                return newIndex;
-            }
-            // Handle end of route
-            setCurrentInstruction("You have reached your final destination!");
-            setNextStopName('');
-            return prevIndex;
-        });
-        console.log("handleReachDestination in MapScreen triggered, nextStopIndex: ", nextStopIndex);
-    }, [setNextStopIndex, sortedStops, updateRoute, setCurrentInstruction, setNextStopName]);
+    // const handleReachDestination = useCallback(() => {
+    //     setNextStopIndex((prevIndex) => {
+    //         const newIndex = prevIndex + 1;
+    //         if (newIndex < sortedStops.length) {
+    //             updateRoute();
+    //             return newIndex;
+    //         }
+    //         // Handle end of route
+    //         setCurrentInstruction("You have reached your final destination!");
+    //         setNextStopName('');
+    //         return prevIndex;
+    //     });
+    //     console.log("handleReachDestination in MapScreen triggered, nextStopIndex: ", nextStopIndex);
+    // }, [setNextStopIndex, sortedStops, updateRoute, setCurrentInstruction, setNextStopName]);
 
     return (
         <View style={styles.container}>

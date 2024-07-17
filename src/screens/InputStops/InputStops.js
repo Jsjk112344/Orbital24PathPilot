@@ -17,7 +17,6 @@ const InputStops = () => {
 
     const handleFetchRoute = async () => {
         try {
-            setNextStopIndex(1);
             const result = await fetchAndSetRoute(); // Assume fetchAndSetRoute resolves to a result indicating success/failure
             
             if (result.success) { // Check if the function was successful

@@ -14,6 +14,7 @@ import { LogBox } from 'react-native';
 import MapScreen from './src/screens/MapScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomDrawerProvider } from './src/context/BottomDrawerContext';
+import { NavigationProvider } from './src/context/NavigationProviderContext';
 
 LogBox.ignoreAllLogs();
 
@@ -27,9 +28,11 @@ const App = () => {
     <BottomDrawerProvider>
       <SafeAreaView style={styles.root}>
         <RouteProvider>
-          <GestureHandlerRootView style={{flex: 1}}>
-            <Navigation />
-          </GestureHandlerRootView>
+          <NavigationProvider>
+            <GestureHandlerRootView style={{flex: 1}}>
+              <Navigation />
+            </GestureHandlerRootView>
+            </NavigationProvider>
         </RouteProvider>
       </SafeAreaView>
     </BottomDrawerProvider>

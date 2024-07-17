@@ -5,9 +5,11 @@ import { fetchRoutes, decodePolylines, parseRouteResponses } from '../apiUtils/a
 import { sortStops } from '../SortStop/SortStop'
 import { useBottomDrawer } from '../../context/BottomDrawerContext';
 import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
+import { useNavigationContext } from '../../context/NavigationProviderContext';
 
 const useRouteLogic = () => {
     const { routeDetails, setRouteDetails, currentLocation } = useContext(RouteContext);
+    //const { handleReachDestination } = useNavigationContext();
     const { sortedStops, setSortedStops } = useRouteContext();
     const [stops, setStops] = useState([]);
     const [region, setRegion] = useState({
@@ -20,14 +22,11 @@ const useRouteLogic = () => {
     const [nextStopIndex, setNextStopIndex] = useState(1);
     const { setCurrentInstruction, nextStopName, setNextStopName } = useBottomDrawer();
 
-    useEffect(() => {
-        fetchAndSetNextStop(currentLocation);
-    }, [fetchAndSetNextStop,setNextStopIndex,]);
-
     const fetchAndSetRoute = async () => {
         console.log("fetchAndSetRoute triggered, stops length: " + stops.length);
-        setNextStopIndex(0);
-        fetchAndSetNextStop(currentLocation);
+        //handleReachDestination(false);
+        // setNextStopIndex(1);
+        //fetchAndSetNextStop(currentLocation);
         console.log('fetchAndSetRoute setNextStopIndex to: ', nextStopIndex);
         
         if (stops.length < 2) {
