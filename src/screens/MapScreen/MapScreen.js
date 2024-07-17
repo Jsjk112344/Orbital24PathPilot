@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid, Text } from 'react-native';
+import { View, StyleSheet, Dimensions, Platform, PermissionsAndroid } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import { RouteContext } from '../../context/RouteContext';
@@ -7,9 +7,10 @@ import { useRouteContext } from '../../context/RouteContext';
 import { Image } from 'react-native-elements';
 import arrow from '../../../assets/images/location_arrow.png';
 import { magnetometer, SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
-import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
 import useRouteLogic from '../../utils/useRouteLogic/useRouteLogic';
-//import {getNextInstruction}
+import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
+import { useBottomDrawer } from '../../context/BottomDrawerContext';
+//import { getNextInstruction } from '../../utils/navigationUtils/navigationUtils';
 
 setUpdateIntervalForType(SensorTypes.magnetometer, 1000);
 
@@ -25,13 +26,17 @@ const MapScreen = () => {
     const [userLocation, setUserLocation] = useState(null);
     const [region, setRegion] = useState(currentRegion);
     const [heading, setHeading] = useState(0);
-    //const [currentInstruction, setCurrentInstruction] = useState(' ');
-    const {fetchAndSetNextStop} = useRouteLogic()
+    const { setCurrentInstruction, setNextStopName } = useBottomDrawer();
+    const { fetchAndSetNextStop, setNextStopIndex, nextStopIndex } = useRouteLogic();
 
     const updateRoute = useCallback(async () => {
+        //console.log('updateRoute in MapScreen triggering started');
         if (userLocation) {
+            //console.log('waiting for fetchAndSetNextStop');
             await fetchAndSetNextStop(userLocation);
+            //setCurrentInstruction(routeDetails.nextStopDetails.steps);
         }
+        //console.log('updateRoute in MapScreen triggered');
     }, [userLocation, fetchAndSetNextStop]);
 
     useEffect(() => {
@@ -112,9 +117,20 @@ const MapScreen = () => {
         updateRoute();
     }, [updateRoute]);
 
-    //include Claude suggestion for directions here
-
-    const instructions = routeDetails.instructions || ["No instructions available"];
+    const handleReachDestination = useCallback(() => {
+        setNextStopIndex((prevIndex) => {
+            const newIndex = prevIndex + 1;
+            if (newIndex < sortedStops.length) {
+                updateRoute();
+                return newIndex;
+            }
+            // Handle end of route
+            setCurrentInstruction("You have reached your final destination!");
+            setNextStopName('');
+            return prevIndex;
+        });
+        console.log("handleReachDestination in MapScreen triggered, nextStopIndex: ", nextStopIndex);
+    }, [setNextStopIndex, sortedStops, updateRoute, setCurrentInstruction, setNextStopName]);
 
     return (
         <View style={styles.container}>
@@ -123,20 +139,21 @@ const MapScreen = () => {
                 region={userLocation || region}
                 onRegionChangeComplete={setRegion} // This updates the region as the user interacts with the map
             >
-                {
+                {routeDetails.nextStopCoords && (
+                    //This Polyline is for current location to nextStop
                     <Polyline
                         coordinates={routeDetails.nextStopCoords}
                         strokeWidth={5}
                         strokeColor='red'
                     />
-                }
+                )}
                 {routeDetails.coordinates.length > 0 && (
+                    //This Polyline if for the entire route
                     <Polyline
                         coordinates={routeDetails.coordinates}
                         strokeWidth={5}
                         strokeColor="red"
                         lineDashPattern={[20,20]}
-                        
                     />
                 )}
                 {sortedStops.map((stop, index) => (
@@ -162,7 +179,8 @@ const MapScreen = () => {
                     </Marker>
                 )}
             </MapView>
-            <BottomDrawer>
+            <BottomDrawer
+                onReachDestination={handleReachDestination} >
                 <View></View>
             </BottomDrawer>
         </View>

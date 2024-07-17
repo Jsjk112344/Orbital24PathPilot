@@ -13,6 +13,7 @@ import { RouteProvider } from './src/context/RouteContext';
 import { LogBox } from 'react-native';
 import MapScreen from './src/screens/MapScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomDrawerProvider } from './src/context/BottomDrawerContext';
 
 LogBox.ignoreAllLogs();
 
@@ -23,13 +24,15 @@ GoogleSignin.configure({
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.root}>
-      <RouteProvider>
-        <GestureHandlerRootView style={{flex: 1}}>
-          <Navigation />
-        </GestureHandlerRootView>
-      </RouteProvider>
-    </SafeAreaView>
+    <BottomDrawerProvider>
+      <SafeAreaView style={styles.root}>
+        <RouteProvider>
+          <GestureHandlerRootView style={{flex: 1}}>
+            <Navigation />
+          </GestureHandlerRootView>
+        </RouteProvider>
+      </SafeAreaView>
+    </BottomDrawerProvider>
   );
 }
 

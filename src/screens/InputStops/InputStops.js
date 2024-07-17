@@ -8,7 +8,7 @@ import CustomInput from '../../components/CustomInput';
 import { RouteContext } from '../../context/RouteContext';
 
 const InputStops = () => {
-    const { stops, setStops, fetchAndSetRoute, region, setRegion } = useRouteLogic();
+    const { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, nextStopIndex } = useRouteLogic();
     const [tripName, setTripName] = useState('');
     const navigation = useNavigation();
 
@@ -17,9 +17,11 @@ const InputStops = () => {
 
     const handleFetchRoute = async () => {
         try {
+            setNextStopIndex(1);
             const result = await fetchAndSetRoute(); // Assume fetchAndSetRoute resolves to a result indicating success/failure
             
             if (result.success) { // Check if the function was successful
+                console.log('handleFetchRoute in InputStops triggered, nextStopIndex : ', nextStopIndex);
                 navigation.navigate('NewTrip', { tripName, date: new Date() }); // Navigate only if successful
             } else {
                 Alert.alert("Error", "Failed to fetch route details."); // Provide a more specific error message

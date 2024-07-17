@@ -1,11 +1,13 @@
-import { useState, useContext, useCallback } from 'react';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useRouteContext, RouteContext } from '../../context/RouteContext';
 import { fetchRoutes, decodePolylines, parseRouteResponses } from '../apiUtils/apiUtils'
 import { sortStops } from '../SortStop/SortStop'
+import { useBottomDrawer } from '../../context/BottomDrawerContext';
+import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
 
 const useRouteLogic = () => {
-    const { setRouteDetails, currentLocation } = useContext(RouteContext);
+    const { routeDetails, setRouteDetails, currentLocation } = useContext(RouteContext);
     const { sortedStops, setSortedStops } = useRouteContext();
     const [stops, setStops] = useState([]);
     const [region, setRegion] = useState({
@@ -15,10 +17,19 @@ const useRouteLogic = () => {
         longitudeDelta: 0.0421,
     });
     //when press reach destination button, increase nextStopIndex by 1 (TBC)
-    const [nextStopIndex, updateNextStopIndex] = useState(1);
+    const [nextStopIndex, setNextStopIndex] = useState(1);
+    const { setCurrentInstruction, nextStopName, setNextStopName } = useBottomDrawer();
+
+    useEffect(() => {
+        fetchAndSetNextStop(currentLocation);
+    }, [fetchAndSetNextStop,setNextStopIndex,]);
 
     const fetchAndSetRoute = async () => {
         console.log("fetchAndSetRoute triggered, stops length: " + stops.length);
+        setNextStopIndex(0);
+        fetchAndSetNextStop(currentLocation);
+        console.log('fetchAndSetRoute setNextStopIndex to: ', nextStopIndex);
+        
         if (stops.length < 2) {
             Alert.alert("Error", "At least two locations are required to calculate a route!");
             return;
@@ -33,16 +44,12 @@ const useRouteLogic = () => {
             const allTransitDetails = parseRouteResponses(responses);
             const polylineCoordinates = decodePolylines(responses);
 
-            // const firstLegResponse = await fetchRoutes([sorted[0], sorted[1]], 'transit');
-            // const firstLegTransit = decodePolylines(firstLegResponse);
-
             setRouteDetails(prevState => ({
                 ...prevState,
                 details: allTransitDetails,
                 coordinates: polylineCoordinates,
-                //firstLegCoords: firstLegTransit,
             }));
-
+            
             // Optionally update the region here if needed
             return { success: true };
         } catch (error) {
@@ -52,22 +59,29 @@ const useRouteLogic = () => {
         }
     };
 
-    const fetchAndSetNextStop = useCallback(async(currentLocation) => {
+    const fetchAndSetNextStop = useCallback(async (currentLocation) => {
         if (!currentLocation || sortedStops.length < 1) {
-            //Alert.alert("Error", "Current location and at least one destination are required!");
             console.log("fetchAndSetNextStop triggered, no update to route, sortedStops length: " + sortedStops.length);
             return;
         }
         try {
+            console.log("fetchAndSetNextStop triggered, nextStopIndex: ", nextStopIndex);
             const response = await fetchRoutes([currentLocation, sortedStops[nextStopIndex]], 'transit');
             const allTransitDetails = parseRouteResponses(response);
             const polylineCoordinates = decodePolylines(response);
 
             setRouteDetails(prevState => ({
                 ...prevState,
-                nextStopCoords:polylineCoordinates,
+                nextStopCoords: polylineCoordinates,
                 //if this works, add first leg details here
+                nextStopDetails: allTransitDetails,
             }));
+
+            setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
+            console.log('sortedStops: ', sortedStops);
+            console.info('nextStopDetails: ', allTransitDetails[0]);
+            setNextStopName(sortedStops[nextStopIndex].label);
+            console.log("Updated Current Instruction");
 
             return { success: true };
         } catch (error) {
@@ -75,9 +89,9 @@ const useRouteLogic = () => {
             Alert.alert("Error", "Failed to process the route data.");
             return { success: false, message: error.message };
         }
-    }, [sortedStops, nextStopIndex]);
+    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName,]);
 
-    return { stops, setStops, fetchAndSetRoute, region, setRegion, updateNextStopIndex, fetchAndSetNextStop };
+    return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, fetchAndSetNextStop, nextStopIndex };
 };
 
 export default useRouteLogic;

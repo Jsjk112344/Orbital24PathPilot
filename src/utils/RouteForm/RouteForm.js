@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import CustomButton from '../../components/CustomButton';
 import { RouteContext } from '../../context/RouteContext';
+import useRouteLogic from '../useRouteLogic/useRouteLogic';
 
 const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
     const { currentLocation } = useContext(RouteContext); // Use the context to get the current location
-    
+    const { setNextStopIndex, fetchAndSetNextStop } = useRouteLogic();
+
     const handleUseMyLocation = () => {
         if (currentLocation && !stops.some(stop => stop.label === currentLocation.label)) {
             setStops([currentLocation, ...stops]);
@@ -18,6 +20,15 @@ const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
             });
         }
     };
+
+    useEffect(() => {
+        fetchAndSetNextStop(currentLocation);
+    }, [fetchAndSetNextStop,setNextStopIndex,]);
+
+    const handleCreateTrip = useCallback(() => {
+        setNextStopIndex(1);
+        fetchRoute(stops);
+    }, [setNextStopIndex, fetchRoute]);
 
     return (
         <View style={styles.container}>
@@ -57,7 +68,7 @@ const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
                 }}
             />
             <CustomButton text="Use My Location" onPress={handleUseMyLocation} />
-            <CustomButton text="Create Trip" onPress={() => fetchRoute(stops)} />
+            <CustomButton text="Create Trip" onPress={handleCreateTrip} />
         </View>
     );
 };
