@@ -26,7 +26,7 @@ const SignInScreen = () => {
         try {
             const response = await auth().signInWithEmailAndPassword(email, password);
             console.log('User signed in:', response);
-            navigation.navigate('Home');
+            navigation.navigate('home');
         } catch (error) {
             console.error('Failed to sign in:', error.message);
             alert('Failed to sign in, please check your credentials and try again.');

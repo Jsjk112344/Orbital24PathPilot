@@ -117,8 +117,8 @@ function HomeTabs() {
       tabBarInactiveTintColor: 'gray',
       headerShown: false,
     })}>
-      <Tab.Screen name="Map" component={MapStack} />
       <Tab.Screen name="Plan Route" component={PlanRouteStack} />
+      <Tab.Screen name="Map" component={MapStack} />
       <Tab.Screen name="My Trips" component={MyTripsStack} />  
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
