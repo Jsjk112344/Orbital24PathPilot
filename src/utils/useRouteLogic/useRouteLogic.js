@@ -23,11 +23,11 @@ const useRouteLogic = () => {
     const { setCurrentInstruction, nextStopName, setNextStopName } = useBottomDrawer();
 
     const fetchAndSetRoute = async () => {
-        console.log("fetchAndSetRoute triggered, stops length: " + stops.length);
+        // console.log("fetchAndSetRoute triggered, stops length: " + stops.length);
         //handleReachDestination(false);
         // setNextStopIndex(1);
         //fetchAndSetNextStop(currentLocation);
-        console.log('fetchAndSetRoute setNextStopIndex to: ', nextStopIndex);
+        // console.log('fetchAndSetRoute setNextStopIndex to: ', nextStopIndex);
         
         if (stops.length < 2) {
             Alert.alert("Error", "At least two locations are required to calculate a route!");
@@ -77,8 +77,8 @@ const useRouteLogic = () => {
             }));
 
             setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
-            console.log('sortedStops: ', sortedStops);
-            console.info('nextStopDetails: ', allTransitDetails[0]);
+            // console.log('sortedStops: ', sortedStops);
+            // console.info('nextStopDetails: ', allTransitDetails[0]);
             setNextStopName(sortedStops[nextStopIndex].label);
             console.log("Updated Current Instruction");
 

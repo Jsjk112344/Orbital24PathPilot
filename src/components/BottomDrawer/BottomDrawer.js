@@ -12,6 +12,7 @@ export default function BottomDrawer({ onReachDestination }) {
     const { nextStopIndex } = useRouteLogic();
     const { nextStopName, setNextStopName } = useBottomDrawer();
 
+
     // useEffect(() => {
     //     if (sortedStops.length > 1) {
     //         console.log(sortedStops[nextStopIndex]);
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'center',
         top: 90,
+        color: '#03c6fc',
     },
     button: {
         backgroundColor: '#007AFF',

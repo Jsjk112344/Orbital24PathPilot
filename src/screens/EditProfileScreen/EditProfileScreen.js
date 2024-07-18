@@ -29,6 +29,7 @@ const EditProfileScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Tell us about yourself..."
+        placeholderTextColor="gray"
         value={biography}
         onChangeText={setBiography}
         multiline
@@ -37,6 +38,7 @@ const EditProfileScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="What kind of social work do you do?"
+        placeholderTextColor="gray"
         value={socialWork}
         onChangeText={setSocialWork}
       />
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 10,
+    color: 'black'
   },
   input: {
     marginBottom: 20,
@@ -66,6 +69,7 @@ const styles = StyleSheet.create({
     padding: 10,
     minHeight: 50,
     textAlignVertical: 'top',
+    color: 'black'
   },
 });
 
