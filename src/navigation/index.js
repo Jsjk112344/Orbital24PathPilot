@@ -12,7 +12,7 @@ import ConfirmEmailScreen from "../screens/ConfirmEmailScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import MapScreen from "../screens/MapScreen";
 import RouteScreen from "../screens/RouteScreen";
-import MyTripsScreen from "../screens/MyTripsScreen";  // Renamed NotificationsScreen to MyTripsScreen
+import MyTripsScreen from "../screens/MyTripsScreen"; // Renamed NotificationsScreen to MyTripsScreen
 import ProfileScreen from "../screens/ProfileScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import NewTrip from "../screens/NewTrip";
@@ -33,13 +33,14 @@ import EnDetails from "../screens/BeneficiaryDetails/EnDetails";
 import FilosDetails from "../screens/BeneficiaryDetails/FilosDetails";
 import FFTHDetails from "../screens/BeneficiaryDetails/FFTHDetails";
 import FFFADetails from "../screens/BeneficiaryDetails/FFFADetails";
-import HopesInMealsDetails from "../screens/BeneficiaryDetails/HopesInMealsDetails"
+import HopesInMealsDetails from "../screens/BeneficiaryDetails/HopesInMealsDetails";
 import HaoRenHaoShiDetails from "../screens/BeneficiaryDetails/HaoRenHaoShiDetails";
 import KrsnaDetails from "../screens/BeneficiaryDetails/KrsnaDetails";
 import MummyYummyDetails from "../screens/BeneficiaryDetails/MummyYummyDetails";
 import RealmDetails from "../screens/BeneficiaryDetails/RealmDetails";
 import LovingHeartDetails from "../screens/BeneficiaryDetails/LovingHeartDetails";
 import MetroYMCADetails from "../screens/BeneficiaryDetails/MetroYMCADetails";
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -75,19 +76,11 @@ function PlanRouteStack() {
       <Stack.Screen name="RealmDetails" component={RealmDetails} />
       <Stack.Screen name="MummyYummyDetails" component={MummyYummyDetails} />
       <Stack.Screen name="MetroYMCADetails" component={MetroYMCADetails} />
+      <Stack.Screen name="MyTrips" component={MyTripsScreen} />
       <Stack.Screen name="Help" component={HelpScreen} />
-      <Stack.Screen name="Chat" component={ChatScreen} /> 
+      <Stack.Screen name="Chat" component={ChatScreen} />
       <Stack.Screen name="NewTrip" component={NewTrip} />
       <Stack.Screen name="InputStops" component={InputStops} />
-      <Stack.Screen name="TripView" component={TripView} />
-    </Stack.Navigator>
-  );
-}
-
-function MyTripsStack() {  
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="MyTripsMain" component={MyTripsScreen} />  
       <Stack.Screen name="TripView" component={TripView} />
     </Stack.Navigator>
   );
@@ -104,22 +97,24 @@ function ProfileStack() {
 
 function HomeTabs() {
   return (
-    <Tab.Navigator screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-        if (route.name === 'Map') iconName = 'map';
-        else if (route.name === 'Plan Route') iconName = 'road';
-        else if (route.name === 'My Trips') iconName = 'suitcase';  
-        else if (route.name === 'Profile') iconName = 'user';
-        return <Icon name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: 'tomato',
-      tabBarInactiveTintColor: 'gray',
-      headerShown: false,
-    })}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'Map') iconName = 'map';
+          else if (route.name === 'Plan Route') iconName = 'road';
+          else if (route.name === 'Beneficiaries') iconName = 'users';
+          else if (route.name === 'Profile') iconName = 'user';
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false,
+      })}
+    >
       <Tab.Screen name="Plan Route" component={PlanRouteStack} />
       <Tab.Screen name="Map" component={MapStack} />
-      <Tab.Screen name="My Trips" component={MyTripsStack} />  
+      <Tab.Screen name="Beneficiaries" component={BeneficiaryListScreen} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

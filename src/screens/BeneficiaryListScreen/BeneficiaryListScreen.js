@@ -30,9 +30,7 @@ const BeneficiaryListScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}>
-                    <Text style={styles.buttonText}>Back</Text>
-                </TouchableOpacity>
+               
                 <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.filterButton}>
                     <Text style={styles.buttonText}>Filter</Text>
                 </TouchableOpacity>

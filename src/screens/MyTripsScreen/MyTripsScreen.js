@@ -57,8 +57,8 @@ const MyTripsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={loadTrips} style={styles.refreshButton}>
-        <Text style={styles.refreshButtonText}>Refresh</Text>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
       <FlatList
         data={trips}
@@ -110,16 +110,17 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: 'white', // Explicitly setting the text color
   },
-  refreshButton: {
-    backgroundColor: '#ddd',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  refreshButtonText: {
-    color: '#000', // Explicitly setting the text color
-    fontWeight: 'bold',
+  buttonText: {
+    fontSize: 16,
+    color: '#000',
     textAlign: 'center',
+  },
+  backButton: {
+    alignSelf: 'flex-start', // Align to the left
+    padding: 10,
+    backgroundColor: '#ddd',
+    borderRadius: 5,
+    marginBottom: 10,
   },
 });
 

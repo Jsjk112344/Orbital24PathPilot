@@ -40,8 +40,8 @@ const RouteScreen = () => {
         navigation.navigate('InputStops');
     };
 
-    const handleViewBeneficiariesPress = () => {
-        navigation.navigate('BeneficiaryList');
+    const handleViewMyTripsPress = () => {
+        navigation.navigate('MyTrips');
     };
 
     const handleSOSPress = () => {
@@ -129,10 +129,10 @@ const RouteScreen = () => {
                         <Text style={styles.buttonLabel}>Add Trip</Text>
                     </View>
                     <View style={styles.buttonWrapper}>
-                        <TouchableOpacity onPress={handleViewBeneficiariesPress} style={styles.button}>
-                            <Icon name="users" size={24} color="white" />
+                        <TouchableOpacity onPress={handleViewMyTripsPress} style={styles.button}>
+                            <Icon name="suitcase" size={24} color="white" />
                         </TouchableOpacity>
-                        <Text style={styles.buttonLabel}>Beneficiaries</Text>
+                        <Text style={styles.buttonLabel}>My Trips</Text>
                     </View>
                     <View style={styles.buttonWrapper}>
                         <TouchableOpacity onPress={handleSOSPress} style={styles.button}>
