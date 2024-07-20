@@ -1,4 +1,3 @@
-// Navigation.js
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,7 +11,7 @@ import ConfirmEmailScreen from "../screens/ConfirmEmailScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import MapScreen from "../screens/MapScreen";
 import RouteScreen from "../screens/RouteScreen";
-import MyTripsScreen from "../screens/MyTripsScreen"; // Renamed NotificationsScreen to MyTripsScreen
+import MyTripsScreen from "../screens/MyTripsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import NewTrip from "../screens/NewTrip";
@@ -20,7 +19,7 @@ import InputStops from "../screens/InputStops";
 import TripView from "../screens/TripView/TripView";
 import EditProfileScreen from "../screens/EditProfileScreen/EditProfileScreen";
 import BeneficiaryListScreen from "../screens/BeneficiaryListScreen/BeneficiaryListScreen";
-import HelpScreen from "../screens/HelpScreen/HelpScreen"; // Import the new HelpScreen
+import HelpScreen from "../screens/HelpScreen/HelpScreen";
 import ChatScreen from "../screens/ChatScreen/ChatScreen";
 
 // Import beneficiary detail screens
@@ -59,6 +58,16 @@ function PlanRouteStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="PlanRouteMain" component={RouteScreen} />
+      <Stack.Screen name="NewTrip" component={NewTrip} />
+      <Stack.Screen name="InputStops" component={InputStops} />
+      <Stack.Screen name="TripView" component={TripView} />
+    </Stack.Navigator>
+  );
+}
+
+function BeneficiaryStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="BeneficiaryList" component={BeneficiaryListScreen} />
       <Stack.Screen name="ApexDetails" component={ApexDetails} />
       <Stack.Screen name="AscendDetails" component={AscendDetails} />
@@ -76,12 +85,6 @@ function PlanRouteStack() {
       <Stack.Screen name="RealmDetails" component={RealmDetails} />
       <Stack.Screen name="MummyYummyDetails" component={MummyYummyDetails} />
       <Stack.Screen name="MetroYMCADetails" component={MetroYMCADetails} />
-      <Stack.Screen name="MyTrips" component={MyTripsScreen} />
-      <Stack.Screen name="Help" component={HelpScreen} />
-      <Stack.Screen name="Chat" component={ChatScreen} />
-      <Stack.Screen name="NewTrip" component={NewTrip} />
-      <Stack.Screen name="InputStops" component={InputStops} />
-      <Stack.Screen name="TripView" component={TripView} />
     </Stack.Navigator>
   );
 }
@@ -114,7 +117,7 @@ function HomeTabs() {
     >
       <Tab.Screen name="Plan Route" component={PlanRouteStack} />
       <Tab.Screen name="Map" component={MapStack} />
-      <Tab.Screen name="Beneficiaries" component={BeneficiaryListScreen} />
+      <Tab.Screen name="Beneficiaries" component={BeneficiaryStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
@@ -130,6 +133,7 @@ const Navigation = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen name="MyTrips" component={MyTripsScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
