@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, FlatList, Alert, Platform } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
 import XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
 import { decode as atob } from 'base-64';
-import CustomButton from '../../components/CustomButton';
+import TaskList from '../../components/Tasklist/Tasklist';
 
 const RouteScreen = () => {
     const navigation = useNavigation();
@@ -66,7 +66,7 @@ const RouteScreen = () => {
             });
 
             const file = res[0];
-            console.log('Selected file:', file);
+            // console.log('Selected file:', file);
 
             const filePath = Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
             const fileContent = await RNFS.readFile(filePath, 'base64');
@@ -76,12 +76,12 @@ const RouteScreen = () => {
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-            console.log('Parsed JSON data:', jsonData);
+            // console.log('Parsed JSON data:', jsonData);
 
             parseExcelData(jsonData);
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
-                console.log('User cancelled the picker');
+                // console.log('User cancelled the picker');
             } else {
                 console.error('Error reading the file:', err);
                 Alert.alert('Error', 'Unable to read the file.');
@@ -97,19 +97,6 @@ const RouteScreen = () => {
             remarks: row[3],
         }));
         setTasks(tasksArray);
-    };
-
-    const renderTaskItem = ({ item }) => (
-        <View style={styles.taskCard}>
-            <Text style={styles.taskName}>{item.name}</Text>
-            <Text style={styles.taskDetails}>Food: {item.food}</Text>
-            <Text style={styles.taskDetails}>Address: {item.address}</Text>
-            <Text style={styles.taskDetails}>Remarks: {item.remarks}</Text>
-        </View>
-    );
-
-    const clearTaskList = () => {
-        setTasks([]);
     };
 
     return (
@@ -148,20 +135,7 @@ const RouteScreen = () => {
                     </View>
                 </View>
             </View>
-            <View style={styles.taskList}>
-                {tasks.length === 0 ? (
-                    <Text style={styles.noTasksText}>No tasks yet</Text>
-                ) : (
-                    <FlatList
-                        data={tasks}
-                        renderItem={renderTaskItem}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                )}
-                {tasks.length > 0 && (
-                    <CustomButton onPress={clearTaskList} style={styles.clearButton} type="TERTIARY" text="Clear Task List"/>
-                )}
-            </View>
+            <TaskList tasks={tasks} setTasks={setTasks} />
         </ScrollView>
     );
 };
@@ -235,54 +209,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#666666', // Explicitly stating the color
         textAlign: 'center',
-    },
-    taskList: {
-        marginTop: 20,
-    },
-    noTasksText: {
-        fontSize: 18,
-        color: '#666666', // Explicitly stating the color
-        textAlign: 'center',
-        marginTop: 20,
-    },
-    taskCard: {
-        backgroundColor: '#ffffff',
-        borderRadius: 10,
-        padding: 20,
-        marginBottom: 10,
-        elevation: 3,  // Adds shadow on Android
-        shadowColor: '#000',  // Adds shadow on iOS
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-    },
-    taskName: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 5,
-        color: "#999999"
-    },
-    taskDetails: {
-        fontSize: 16,
-        color: '#666666', // Explicitly stating the color
-    },
-    clearButton: {
-        backgroundColor: '#FF6347', // Tomato color for clear button
-        padding: 15,
-        borderRadius: 10,
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 5,  // Adds shadow on Android
-        shadowColor: '#000',  // Adds shadow on iOS
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-    },
-    clearButtonText: {
-        fontSize: 16,
-        color: 'white',
-        fontWeight: 'bold',
     },
 });
 
