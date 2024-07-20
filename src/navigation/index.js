@@ -21,6 +21,7 @@ import EditProfileScreen from "../screens/EditProfileScreen/EditProfileScreen";
 import BeneficiaryListScreen from "../screens/BeneficiaryListScreen/BeneficiaryListScreen";
 import HelpScreen from "../screens/HelpScreen/HelpScreen";
 import ChatScreen from "../screens/ChatScreen/ChatScreen";
+import FAQDetailScreen from "../screens/FAQDetailScreen/FAQDetailScreen";
 
 // Import beneficiary detail screens
 import ApexDetails from "../screens/BeneficiaryDetails/ApexDetails";
@@ -135,6 +136,7 @@ const Navigation = () => {
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="MyTrips" component={MyTripsScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="FAQDetail" component={FAQDetailScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>

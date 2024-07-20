@@ -1,7 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Linking, Platform, PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Linking, Platform, PermissionsAndroid, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
+
+const FAQs = [
+    { question: 'What should I do if no one is home to receive the food?', answer: 'Leave the food at the door and notify the recipient via phone or the app.' },
+    { question: 'How do I handle special dietary requests?', answer: 'Check the delivery details for any special instructions and ensure you follow them.' },
+    { question: 'What should I do if the recipient is unwell?', answer: 'Report the situation to the emergency contact provided and wait for further instructions.' },
+    { question: 'How can I ensure the food stays fresh?', answer: 'Use insulated bags and follow the delivery instructions to minimize the time food is out of storage.' },
+    { question: 'What if I feel unsafe during delivery?', answer: 'Call emergency services immediately and notify your coordinator.' },
+];
 
 const HelpScreen = () => {
     const navigation = useNavigation();
@@ -45,8 +53,18 @@ const HelpScreen = () => {
     };
 
     const handleChatPress = () => {
-        navigation.navigate("Chat")
+        navigation.navigate("Chat");
     };
+
+    const handleFAQPress = (faq) => {
+        navigation.navigate("FAQDetail", { faq });
+    };
+
+    const renderFAQItem = ({ item }) => (
+        <TouchableOpacity style={styles.faqCard} onPress={() => handleFAQPress(item)}>
+            <Text style={styles.faqQuestion}>{item.question}</Text>
+        </TouchableOpacity>
+    );
 
     return (
         <View style={styles.container}>
@@ -70,6 +88,13 @@ const HelpScreen = () => {
                     </View>
                 </View>
             </View>
+            <Text style={styles.faqTitle}>Frequently Asked Questions:</Text>
+            <FlatList
+                data={FAQs}
+                renderItem={renderFAQItem}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={styles.faqList}
+            />
         </View>
     );
 };
@@ -108,6 +133,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
+        marginBottom: 20,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -136,6 +162,31 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666666',
         textAlign: 'center',
+    },
+    faqTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#333',
+    },
+    faqList: {
+        paddingBottom: 20,
+    },
+    faqCard: {
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
+        padding: 20,
+        marginBottom: 10,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+    },
+    faqQuestion: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
     },
 });
 
