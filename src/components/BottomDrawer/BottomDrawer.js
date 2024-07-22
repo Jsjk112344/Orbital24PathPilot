@@ -12,7 +12,7 @@ export default function BottomDrawer({ onReachDestination }) {
     const { nextStopIndex } = useRouteLogic();
     const { nextStopName, setNextStopName } = useBottomDrawer();
 
-    const snapPoints = useMemo(() => ['30%', '100%'], []);
+    const snapPoints = useMemo(() => ['40%', '100%'], []);
     const renderBackdrop = useCallback(
         props => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={0} {...props} />
     );
@@ -25,12 +25,12 @@ export default function BottomDrawer({ onReachDestination }) {
                 enableTouchThrough={true}
             >
                 <View style={styles.contentContainer}>
-                    <Text style={styles.heading}>Directions to:</Text>
-                    <Text style={styles.address}>{nextStopName}</Text>
-                    <Text style={styles.instruction}>{currentInstruction}</Text>
                     <TouchableOpacity style={styles.button} onPress={onReachDestination}>
-                        <Text style={styles.buttonText}>I have reached my destination</Text>
+                        <Text style={styles.buttonText}>Destination Reached</Text>
                     </TouchableOpacity>
+                    <Text style={styles.heading}>Heading to: {nextStopName}</Text>
+                    {/* <Text style={styles.address}>{nextStopName}</Text> */}
+                    <Text style={styles.instruction}>{currentInstruction}</Text>
                 </View>
             </BottomSheet>
         </View>
@@ -61,27 +61,37 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
     heading: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 'bold',
         color: '#444444',
+        width: '100%',
         marginBottom: 10,
+        top: -10,
+        left: 0,
     },
     address: {
         fontSize: 20,
-        color: '#666666',
+        fontWeight: 'bold',
+        color: '#444444',
         marginBottom: 20,
+        //position: 'absolute',
+        top: 15,
+        left: 0,
     },
     instruction: {
         fontSize: 18,
         color: '#888888',
         textAlign: 'center',
+        position: 'relative',
         marginBottom: 30,
+        top: 0,
     },
     button: {
         backgroundColor: '#007AFF',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
         borderRadius: 25,
+        top: -20,
     },
     buttonText: {
         color: 'white',
