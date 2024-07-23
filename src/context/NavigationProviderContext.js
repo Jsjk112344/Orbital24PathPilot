@@ -12,12 +12,12 @@ export const NavigationProvider = ({ children }) => {
     //stuff added myself
     const [userLocation, setUserLocation] = useState(null);
 
-    const { fetchAndSetNextStop, setNextStopIndex, nextStopIndex } = useRouteLogic();
+    const { fetchAndSetNextStop, setNextStopIndex, nextStopIndex, isOnBus } = useRouteLogic();
     const { sortedStops } = useRouteContext();
     const { setCurrentInstruction, setNextStopName, setOtherInstruction } = useBottomDrawer();
 
     const updateRoute = useCallback(async () => {
-        if (userLocation) {
+        if (userLocation && !isOnBus) {
             await fetchAndSetNextStop(userLocation);
         }
     }, [userLocation, fetchAndSetNextStop]);
