@@ -14,7 +14,7 @@ export const NavigationProvider = ({ children }) => {
 
     const { fetchAndSetNextStop, setNextStopIndex, nextStopIndex } = useRouteLogic();
     const { sortedStops } = useRouteContext();
-    const { setCurrentInstruction, setNextStopName } = useBottomDrawer();
+    const { setCurrentInstruction, setNextStopName, setOtherInstruction } = useBottomDrawer();
 
     const updateRoute = useCallback(async () => {
         if (userLocation) {
@@ -33,17 +33,19 @@ export const NavigationProvider = ({ children }) => {
                 }
                 // Handle end of route
                 setCurrentInstruction("You have reached your final destination!");
+                setOtherInstruction(" ");
                 setNextStopName('');
                 return prevIndex;
             });
         } else {
             setNextStopIndex(1);
             setCurrentInstruction('No Instructions Yet!');
+            setOtherInstruction(" ");
             setNextStopName('');
         }
 
         console.log("handleReachDestination in NavigationProviderContext triggered, nextStopIndex: ", nextStopIndex);
-    }, [setNextStopIndex, sortedStops, updateRoute, setCurrentInstruction, setNextStopName, nextStopIndex]);
+    }, [setNextStopIndex, sortedStops, updateRoute, setCurrentInstruction, setOtherInstruction, setNextStopName, nextStopIndex]);
 
     return (
         <NavigationContext.Provider value={{

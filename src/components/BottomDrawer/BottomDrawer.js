@@ -10,9 +10,9 @@ export default function BottomDrawer({ onReachDestination }) {
     const { currentInstruction } = useBottomDrawer();
     const { sortedStops } = useRouteContext();
     const { nextStopIndex } = useRouteLogic();
-    const { nextStopName, setNextStopName } = useBottomDrawer();
+    const { nextStopName, setNextStopName, otherInstruction } = useBottomDrawer();
 
-    const snapPoints = useMemo(() => ['40%', '100%'], []);
+    const snapPoints = useMemo(() => ['35%', '100%'], []);
     const renderBackdrop = useCallback(
         props => <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={0} {...props} />
     );
@@ -29,8 +29,9 @@ export default function BottomDrawer({ onReachDestination }) {
                         <Text style={styles.buttonText}>Destination Reached</Text>
                     </TouchableOpacity>
                     <Text style={styles.heading}>Heading to: {nextStopName}</Text>
-                    {/* <Text style={styles.address}>{nextStopName}</Text> */}
                     <Text style={styles.instruction}>{currentInstruction}</Text>
+                    <Text style={styles.heading2}>Next Steps:</Text>
+                    <Text style={styles.otherInstruction}>{otherInstruction}</Text>
                 </View>
             </BottomSheet>
         </View>
@@ -69,6 +70,15 @@ const styles = StyleSheet.create({
         top: -10,
         left: 0,
     },
+    heading2: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#444444',
+        width: '100%',
+        marginBottom: 10,
+        top: 100,
+        left: 0,
+    },
     address: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -82,9 +92,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#888888',
         textAlign: 'center',
+        position: 'absolute',
+        marginBottom: 30,
+        top: 120,
+    },
+    otherInstruction: {
+        fontSize: 18,
+        color: '#888888',
+        textAlign: 'center',
         position: 'relative',
         marginBottom: 30,
-        top: 0,
+        top: 100,
     },
     button: {
         backgroundColor: '#007AFF',

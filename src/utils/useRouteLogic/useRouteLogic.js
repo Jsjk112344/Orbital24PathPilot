@@ -20,7 +20,7 @@ const useRouteLogic = () => {
     });
     //when press reach destination button, increase nextStopIndex by 1 (TBC)
     const [nextStopIndex, setNextStopIndex] = useState(1);
-    const { setCurrentInstruction, nextStopName, setNextStopName } = useBottomDrawer();
+    const { setCurrentInstruction, nextStopName, setNextStopName, setOtherInstruction } = useBottomDrawer();
 
     const fetchAndSetRoute = async () => {
         if (stops.length < 2) {
@@ -47,7 +47,7 @@ const useRouteLogic = () => {
             // Optionally update the region here if needed
             return { success: true };
         } catch (error) {
-            console.error("Error fetching and setting route:", error);
+            console.error("fetchAndSetRoute() in useRouteLogic.js: Error fetching and setting route:", error);
             Alert.alert("Error", "Failed to process the route data.");
             return { success: false, message: error.message };
         }
@@ -73,18 +73,28 @@ const useRouteLogic = () => {
             }));
 
             setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
+            console.log(allTransitDetails[0].steps[1]);
+            let otherInstruction = " ";
+            if (sortedStops.length > 1) {
+                for (var i = 1; i < allTransitDetails[0].steps.length; i++)  {
+                    otherInstruction += allTransitDetails[0].steps[i].instructions + '\n' + '\n'; 
+                }
+                setOtherInstruction(otherInstruction);
+            }
+            // console.log('sortedStops: ', sortedStops);
+            // console.info('nextStopDetails: ', allTransitDetails[0]);
             setNextStopName(sortedStops[nextStopIndex].label);
             console.log("Updated Current Instruction");
 
             return { success: true };
         } catch (error) {
-            console.error("Error fetching and setting route:", error);
+            console.error("fetchAndSetNextStop() in useRouteLogic.js: Error fetching and setting route:", error);
             Alert.alert("Error", "Failed to process the route data.");
             return { success: false, message: error.message };
         }
     }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName]);
 
-    return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, fetchAndSetNextStop, nextStopIndex };
+    return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, setOtherInstruction, fetchAndSetNextStop, nextStopIndex };
 };
 
 export default useRouteLogic;
