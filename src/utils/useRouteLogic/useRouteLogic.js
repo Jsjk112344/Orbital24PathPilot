@@ -73,7 +73,7 @@ const useRouteLogic = () => {
             }));
 
             setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
-            console.log(allTransitDetails[0].steps[1]);
+            console.log('transit details of step 2: ', allTransitDetails[0].steps[2]);
             let otherInstruction = " ";
             if (sortedStops.length > 1) {
                 for (var i = 1; i < allTransitDetails[0].steps.length; i++)  {
