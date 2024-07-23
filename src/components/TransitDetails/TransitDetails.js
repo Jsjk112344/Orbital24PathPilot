@@ -15,12 +15,13 @@ const TransitDetails = ({ details }) => {
                     <Text style={styles.distance}>
                         <Icon name="map-marker-distance" type="material-community" color="#517fa4" /> Distance: {leg.distance || 'Not available'}
                     </Text>
+                    <Text style={styles.duration}>
+                        <Icon name="timer" type="material-community" color="#517fa4" /> Duration: {leg.duration || 'Not available'}
+                    </Text>
                     {leg.steps.map((step, stepIndex) => {
                         const modifiedInstructions = step.instructions.replace('Subway', 'MRT');
-                        
-                      
                         const vehicle = step.transit_details?.vehicle?.type;
-                        let detailedInstructions = modifiedInstructions;
+                        let detailedInstructions = `${modifiedInstructions} (${step.duration || 'Not available'})`;
 
                         if (vehicle === 'BUS' && step.transit_details?.line?.short_name) {
                             detailedInstructions += ` (Bus numbers: ${step.transit_details.line.short_name})`;
@@ -58,6 +59,18 @@ const TransitDetails = ({ details }) => {
                                                 <Icon name="train" type="material-community" color="#517fa4" /> Vehicle: {step.transit_details.vehicle}
                                             </Text>
                                         )}
+                                        {step.transit_details.suggested_buses && step.transit_details.suggested_buses.length > 0 && (
+                                            <View style={styles.suggestedBusesContainer}>
+                                                <Text style={styles.transitText}>
+                                                    <Icon name="bus" type="material-community" color="#517fa4" /> Suggested Buses:
+                                                </Text>
+                                                {step.transit_details.suggested_buses.map((bus, busIndex) => (
+                                                    <Text key={busIndex} style={styles.suggestedBusText}>
+                                                        {bus.bus} from {bus.from} to {bus.to}
+                                                    </Text>
+                                                ))}
+                                            </View>
+                                        )}
                                     </View>
                                 )}
                             </View>
@@ -94,6 +107,11 @@ const styles = StyleSheet.create({
         color: '#333',
         marginVertical: 5,
     },
+    stepDuration: {
+        fontSize: 14,
+        color: '#333',
+        marginBottom: 5,
+    },
     transitDetailsContainer: {
         marginTop: 5,
         paddingLeft: 10,
@@ -111,6 +129,24 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         display: 'flex',
         alignItems: 'center',
+    },
+    duration: {
+        fontSize: 16,
+        color: '#333',
+        marginBottom: 10,
+        display: 'flex',
+        alignItems: 'center',
+    },
+    suggestedBusesContainer: {
+        marginTop: 5,
+        paddingLeft: 10,
+        borderLeftWidth: 2,
+        borderLeftColor: '#517fa4',
+    },
+    suggestedBusText: {
+        fontSize: 14,
+        color: '#555',
+        marginVertical: 2,
     },
 });
 

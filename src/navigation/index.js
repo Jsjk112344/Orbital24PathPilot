@@ -116,8 +116,9 @@ function HomeTabs() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Plan Route" component={PlanRouteStack} />
+      
       <Tab.Screen name="Map" component={MapStack} />
+      <Tab.Screen name="Plan Route" component={PlanRouteStack} />
       <Tab.Screen name="Beneficiaries" component={BeneficiaryStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
@@ -133,6 +134,7 @@ const Navigation = () => {
         <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="Home" component={HomeTabs} />
+        <Stack.Screen name ="Map" component={MapScreen}/>
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="MyTrips" component={MyTripsScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />

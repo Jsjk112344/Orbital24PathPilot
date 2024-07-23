@@ -1,8 +1,8 @@
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useRouteContext, RouteContext } from '../../context/RouteContext';
-import { fetchRoutes, decodePolylines, parseRouteResponses } from '../apiUtils/apiUtils'
-import { sortStops } from '../SortStop/SortStop'
+import { fetchRoutes, decodePolylines, parseRouteResponses, fetchLtaBusStops, fetchLtaBusRoutes } from '../apiUtils/apiUtils';
+import { sortStops } from '../SortStop/SortStop';
 import { useBottomDrawer } from '../../context/BottomDrawerContext';
 import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
 import { useNavigationContext } from '../../context/NavigationProviderContext';
@@ -23,12 +23,6 @@ const useRouteLogic = () => {
     const { setCurrentInstruction, nextStopName, setNextStopName } = useBottomDrawer();
 
     const fetchAndSetRoute = async () => {
-        // console.log("fetchAndSetRoute triggered, stops length: " + stops.length);
-        //handleReachDestination(false);
-        // setNextStopIndex(1);
-        //fetchAndSetNextStop(currentLocation);
-        // console.log('fetchAndSetRoute setNextStopIndex to: ', nextStopIndex);
-        
         if (stops.length < 2) {
             Alert.alert("Error", "At least two locations are required to calculate a route!");
             return;
@@ -39,8 +33,9 @@ const useRouteLogic = () => {
             console.log("SORTED STOPS", sorted);
             setSortedStops(sorted);
 
+            const [busStops, busRoutes] = await Promise.all([fetchLtaBusStops(), fetchLtaBusRoutes()]);
             const responses = await fetchRoutes(sorted, 'transit');
-            const allTransitDetails = parseRouteResponses(responses);
+            const allTransitDetails = parseRouteResponses(responses, busStops, busRoutes);
             const polylineCoordinates = decodePolylines(responses);
 
             setRouteDetails(prevState => ({
@@ -65,8 +60,9 @@ const useRouteLogic = () => {
         }
         try {
             console.log("fetchAndSetNextStop triggered, nextStopIndex: ", nextStopIndex);
+            const [busStops, busRoutes] = await Promise.all([fetchLtaBusStops(), fetchLtaBusRoutes()]);
             const response = await fetchRoutes([currentLocation, sortedStops[nextStopIndex]], 'transit');
-            const allTransitDetails = parseRouteResponses(response);
+            const allTransitDetails = parseRouteResponses(response, busStops, busRoutes);
             const polylineCoordinates = decodePolylines(response);
 
             setRouteDetails(prevState => ({
@@ -77,8 +73,6 @@ const useRouteLogic = () => {
             }));
 
             setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
-            // console.log('sortedStops: ', sortedStops);
-            // console.info('nextStopDetails: ', allTransitDetails[0]);
             setNextStopName(sortedStops[nextStopIndex].label);
             console.log("Updated Current Instruction");
 
@@ -88,7 +82,7 @@ const useRouteLogic = () => {
             Alert.alert("Error", "Failed to process the route data.");
             return { success: false, message: error.message };
         }
-    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName,]);
+    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName]);
 
     return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, fetchAndSetNextStop, nextStopIndex };
 };

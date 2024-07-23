@@ -1,6 +1,74 @@
 import axios from 'axios';
 import polyline from '@mapbox/polyline';
 
+const fetchLtaBusStops = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("AccountKey", "dvnEMazuR2ahYmibY19thg==");
+    myHeaders.append("accept", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch("http://datamall2.mytransport.sg/ltaodataservice/BusStops", requestOptions);
+        const result = await response.json();
+        return result.value || [];
+    } catch (error) {
+        console.error("Error fetching LTA bus stops:", error);
+        return [];
+    }
+};
+
+const fetchLtaBusRoutes = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("AccountKey", "dvnEMazuR2ahYmibY19thg==");
+    myHeaders.append("accept", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch("http://datamall2.mytransport.sg/ltaodataservice/BusRoutes", requestOptions);
+        const result = await response.json();
+        return result.value || [];
+    } catch (error) {
+        console.error("Error fetching LTA bus routes:", error);
+        return [];
+    }
+};
+
+const getBusSuggestions = (startLocation, endLocation, busStops, busRoutes) => {
+    const startBusStop = busStops.find(stop => {
+        return Math.abs(stop.Latitude - startLocation.lat) < 0.001 && Math.abs(stop.Longitude - startLocation.lng) < 0.001;
+    });
+
+    const endBusStop = busStops.find(stop => {
+        return Math.abs(stop.Latitude - endLocation.lat) < 0.001 && Math.abs(stop.Longitude - endLocation.lng) < 0.001;
+    });
+
+    if (startBusStop && endBusStop) {
+        const possibleRoutes = busRoutes.filter(route => 
+            route.OriginCode === startBusStop.BusStopCode && route.DestinationCode === endBusStop.BusStopCode
+        );
+
+        if (possibleRoutes.length > 0) {
+            const suggestions = possibleRoutes.map(route => ({
+                bus: route.ServiceNo,
+                from: startBusStop.Description,
+                to: endBusStop.Description
+            }));
+            return { suggested_buses: suggestions };
+        }
+    }
+    return null;
+};
+
 const fetchRoutes = async (sortedStops, mode) => {
     const requests = sortedStops.map((stop, index, array) => {
         if (index < array.length - 1) {
@@ -17,7 +85,7 @@ const fetchRoutes = async (sortedStops, mode) => {
     return Promise.all(requests);
 };
 
-const parseRouteResponses = (responses) => {
+const parseRouteResponses = (responses, busStops, busRoutes) => {
     return responses.map(response => {
         if (response.data.status === 'OK' && response.data.routes.length > 0) {
             const routeResponse = response.data.routes[0];
@@ -26,13 +94,19 @@ const parseRouteResponses = (responses) => {
                 duration: leg.duration.text,
                 steps: leg.steps.map(step => ({
                     travel_mode: step.travel_mode,
-                    instructions: step.html_instructions,
+                    instructions: step.html_instructions.replace(/<[^>]+>/g, ''), // Clean HTML tags
+                    distance: step.distance.text,
+                    duration: step.duration.text,
+                    start_location: step.start_location,
+                    end_location: step.end_location,
+                    polyline: step.polyline.points,
                     transit_details: step.transit_details ? {
                         departure_stop: step.transit_details.departure_stop.name,
                         arrival_stop: step.transit_details.arrival_stop.name,
                         line: step.transit_details.line.short_name,
-                        vehicle: step.transit_details.line.vehicle.type
-                    } : null
+                        vehicle: step.transit_details.line.vehicle.type,
+                        num_stops: step.transit_details.num_stops
+                    } : getBusSuggestions(step.start_location, step.end_location, busStops, busRoutes)
                 }))
             }));
         }
@@ -56,4 +130,4 @@ const decodePolylines = (responses) => {
     return coordinates;
 };
 
-export { fetchRoutes, decodePolylines, parseRouteResponses };
+export { fetchRoutes, decodePolylines, parseRouteResponses, fetchLtaBusStops, fetchLtaBusRoutes };
