@@ -1,8 +1,9 @@
-import React, { createContext, useState, useCallback, useContext } from 'react';
+import React, { createContext, useState, useCallback, useContext, useEffect } from 'react';
 import useRouteLogic from '../utils/useRouteLogic/useRouteLogic';
 import { RouteContext, useRouteContext } from '../context/RouteContext';
 import { useBottomDrawer } from './BottomDrawerContext';
 import { disableNetwork } from 'firebase/firestore';
+import Tts from '../../node_modules/react-native-tts';
 
 // Create a context
 const NavigationContext = createContext();
@@ -41,7 +42,9 @@ export const NavigationProvider = ({ children }) => {
         const distance = earthRadius * c;
 
         if (distance < 0.05) {
-            setCurrentInstruction(routeDetails.details[nextStopIndex - 1].steps[nextStepIndex].instructions);
+            const newInstruction = routeDetails.details[nextStopIndex - 1].steps[nextStepIndex].instructions
+            setCurrentInstruction(newInstruction);
+            speakInstruction(newInstruction);
             let otherInstruction = " ";
             if (sortedStops.length > 1) {
                 for (var i = 1; i < routeDetails.details[nextStopIndex - 1].steps.length - nextStepIndex; i++)  {
@@ -66,6 +69,17 @@ export const NavigationProvider = ({ children }) => {
     function toRadians(degrees) {
         return degrees * (Math.PI / 180);
     }
+
+    useEffect(() => {
+        Tts.setDefaultLanguage('en-US');
+        Tts.setDefaultRate(0.5);
+        Tts.setDefaultPitch(1.0);
+    }, []);
+    
+    const speakInstruction = (instruction) => {
+        Tts.stop();
+        Tts.speak(instruction);
+    };
 
     const handleReachDestination = useCallback((notNewTrip) => {
         if (notNewTrip) {
