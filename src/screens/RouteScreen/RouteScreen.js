@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DocumentPicker from 'react-native-document-picker';
-import XLSX from 'xlsx';
-import RNFS from 'react-native-fs';
-import { decode as atob } from 'base-64';
 import TaskList from '../../components/Tasklist/Tasklist';
+import { showDisclaimer } from '../../utils/TasklistHandler/TasklistHandler';
 
 const RouteScreen = () => {
     const navigation = useNavigation();
@@ -48,57 +45,6 @@ const RouteScreen = () => {
         navigation.navigate('Help');
     };
 
-    const showDisclaimer = () => {
-        Alert.alert(
-            'Disclaimer',
-            'Please ensure the Excel file is formatted as follows:\n\nName\tFood\tAddress\tRemarks\n\nClick OK to proceed.',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'OK', onPress: handleFileSelection }
-            ]
-        );
-    };
-
-    const handleFileSelection = async () => {
-        try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-            });
-
-            const file = res[0];
-            // console.log('Selected file:', file);
-
-            const filePath = Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
-            const fileContent = await RNFS.readFile(filePath, 'base64');
-            const binaryStr = atob(fileContent);
-
-            const workbook = XLSX.read(binaryStr, { type: 'binary' });
-            const sheetName = workbook.SheetNames[0];
-            const sheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-            // console.log('Parsed JSON data:', jsonData);
-
-            parseExcelData(jsonData);
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                // console.log('User cancelled the picker');
-            } else {
-                console.error('Error reading the file:', err);
-                Alert.alert('Error', 'Unable to read the file.');
-            }
-        }
-    };
-
-    const parseExcelData = (data) => {
-        const tasksArray = data.slice(1).map((row) => ({
-            name: row[0],
-            food: row[1],
-            address: row[2],
-            remarks: row[3],
-        }));
-        setTasks(tasksArray);
-    };
-
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
@@ -128,7 +74,7 @@ const RouteScreen = () => {
                         <Text style={styles.buttonLabel}>SOS</Text>
                     </View>
                     <View style={styles.buttonWrapper}>
-                        <TouchableOpacity onPress={showDisclaimer} style={styles.button}>
+                        <TouchableOpacity onPress={() => showDisclaimer(setTasks)} style={styles.button}>
                             <Icon name="file-excel-o" size={24} color="white" />
                         </TouchableOpacity>
                         <Text style={styles.buttonLabel}>Add Task List</Text>

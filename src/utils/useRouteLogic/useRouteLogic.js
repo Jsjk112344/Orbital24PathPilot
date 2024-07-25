@@ -20,7 +20,8 @@ const useRouteLogic = () => {
     });
     //when press reach destination button, increase nextStopIndex by 1 (TBC)
     const [nextStopIndex, setNextStopIndex] = useState(1);
-    const { setCurrentInstruction, nextStopName, setNextStopName, setOtherInstruction } = useBottomDrawer();
+    const { currentInstruction, setCurrentInstruction, nextStopName, setNextStopName, setOtherInstruction } = useBottomDrawer();
+    const [isOnBus, setIsOnBus] = useState(false);
 
     const fetchAndSetRoute = async () => {
         if (stops.length < 2) {
@@ -60,6 +61,14 @@ const useRouteLogic = () => {
         }
         try {
             console.log("fetchAndSetNextStop triggered, nextStopIndex: ", nextStopIndex);
+
+            // Check if the user is already on the bus
+            if (currentInstruction && currentInstruction.includes("Bus to")) {
+                setIsOnBus(true);
+                console.log("User is on the bus");
+                return;
+            }
+
             const [busStops, busRoutes] = await Promise.all([fetchLtaBusStops(), fetchLtaBusRoutes()]);
             const response = await fetchRoutes([currentLocation, sortedStops[nextStopIndex]], 'transit');
             const allTransitDetails = parseRouteResponses(response, busStops, busRoutes);
@@ -86,15 +95,20 @@ const useRouteLogic = () => {
             setNextStopName(sortedStops[nextStopIndex].label);
             console.log("Updated Current Instruction");
 
+            if (isOnBus) {
+                setIsOnBus(false);
+                console.log("Bus has reached the intended stop");
+            }
+
             return { success: true };
         } catch (error) {
             console.error("fetchAndSetNextStop() in useRouteLogic.js: Error fetching and setting route:", error);
             Alert.alert("Error", "Failed to process the route data.");
             return { success: false, message: error.message };
         }
-    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName]);
+    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName, isOnBus, currentInstruction]);
 
-    return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, setOtherInstruction, fetchAndSetNextStop, nextStopIndex };
+    return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, setOtherInstruction, fetchAndSetNextStop, nextStopIndex, isOnBus };
 };
 
 export default useRouteLogic;
