@@ -75,7 +75,7 @@ export const NavigationProvider = ({ children }) => {
         Tts.setDefaultRate(0.5);
         Tts.setDefaultPitch(1.0);
     }, []);
-    
+
     const speakInstruction = (instruction) => {
         Tts.stop();
         Tts.speak(instruction);
@@ -90,7 +90,9 @@ export const NavigationProvider = ({ children }) => {
                 if (newIndex < sortedStops.length) {
                     updateRoute();
                     
-                    setCurrentInstruction(routeDetails.details[prevIndex].steps[0].instructions);
+                    const newInstruction = routeDetails.details[prevIndex].steps[0].instructions;
+                    setCurrentInstruction(newInstruction);
+                    speakInstruction(newInstruction);
                     let otherInstruction = " ";
                     if (sortedStops.length > 1) {
                         for (var i = 1; i < routeDetails.details[prevIndex].steps.length; i++)  {
@@ -104,6 +106,7 @@ export const NavigationProvider = ({ children }) => {
                 }
                 // Handle end of route
                 setCurrentInstruction("You have reached your final destination!");
+                speakInstruction("You have reached your final destination!");
                 setOtherInstruction(" ");
                 setNextStopName('');
                 return prevIndex;
