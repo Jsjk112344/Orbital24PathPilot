@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
     const { currentLocation } = useContext(RouteContext); // Use the context to get the current location
     const { setNextStopIndex, fetchAndSetNextStop } = useRouteLogic();
-    const { handleReachDestination } = useNavigationContext();
+    const { handleReachDestination, } = useNavigationContext();
 
     const handleUseMyLocation = () => {
         if (currentLocation && !stops.some(stop => stop.label === currentLocation.label)) {
@@ -26,13 +26,13 @@ const RouteForm = ({ setRegion, fetchRoute, stops, setStops }) => {
 
     useEffect(() => {
         fetchAndSetNextStop(currentLocation);
-    }, [fetchAndSetNextStop, setNextStopIndex,]);
+    }, [fetchAndSetNextStop,]);
 
     const handleCreateTrip = useCallback(() => {
         setNextStopIndex(1);
         fetchRoute(stops);
         handleReachDestination(false);
-    }, [setNextStopIndex, fetchRoute, handleReachDestination]);
+    }, [setNextStopIndex, fetchRoute, handleReachDestination, /*updateInstruction*/]);
 
     return (
         <View style={styles.container}>

@@ -4,12 +4,9 @@ import { useRouteContext, RouteContext } from '../../context/RouteContext';
 import { fetchRoutes, decodePolylines, parseRouteResponses, fetchLtaBusStops, fetchLtaBusRoutes } from '../apiUtils/apiUtils';
 import { sortStops } from '../SortStop/SortStop';
 import { useBottomDrawer } from '../../context/BottomDrawerContext';
-import BottomDrawer from '../../components/BottomDrawer/BottomDrawer';
-import { useNavigationContext } from '../../context/NavigationProviderContext';
 
 const useRouteLogic = () => {
     const { routeDetails, setRouteDetails, currentLocation } = useContext(RouteContext);
-    //const { handleReachDestination } = useNavigationContext();
     const { sortedStops, setSortedStops } = useRouteContext();
     const [stops, setStops] = useState([]);
     const [region, setRegion] = useState({
@@ -20,8 +17,10 @@ const useRouteLogic = () => {
     });
     //when press reach destination button, increase nextStopIndex by 1 (TBC)
     const [nextStopIndex, setNextStopIndex] = useState(1);
-    const { currentInstruction, setCurrentInstruction, nextStopName, setNextStopName, setOtherInstruction } = useBottomDrawer();
-    const [isOnBus, setIsOnBus] = useState(false);
+    //The idea is that we will create an array of latlongs coords of the start of each step
+    //A >> B >> C >> D == A >> B is Step Index 1, Total is 3 steps.
+    const [nextStepIndex, setNextStepIndex] = useState(1);
+    const { setCurrentInstruction, nextStopName, setNextStopName, setOtherInstruction } = useBottomDrawer();
 
     const fetchAndSetRoute = async () => {
         if (stops.length < 2) {
@@ -29,21 +28,39 @@ const useRouteLogic = () => {
             return;
         }
         try {
-            console.log("STOPS", stops);
             const sorted = await sortStops(stops); // Ensure this function is correctly defined/imported
-            console.log("SORTED STOPS", sorted);
             setSortedStops(sorted);
 
             const [busStops, busRoutes] = await Promise.all([fetchLtaBusStops(), fetchLtaBusRoutes()]);
             const responses = await fetchRoutes(sorted, 'transit');
             const allTransitDetails = parseRouteResponses(responses, busStops, busRoutes);
             const polylineCoordinates = decodePolylines(responses);
+            
+            let stopsStepsCoords = [];
+
+            for (var i = 0; i < stops.length - 1; i++) {
+                stopsStepsCoords[i] = new Array();
+                for (var j = 0; j < allTransitDetails[i].steps.length; j++) {
+                    stopsStepsCoords[i].push(allTransitDetails[i].steps[j].start_location);
+                }
+            }
 
             setRouteDetails(prevState => ({
                 ...prevState,
                 details: allTransitDetails,
                 coordinates: polylineCoordinates,
+                stopsStepsCoords: stopsStepsCoords,
             }));
+
+            setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
+            let otherInstruction = " ";
+            if (sorted.length > 1) {
+                for (var i = 1; i < allTransitDetails[0].steps.length; i++)  {
+                    otherInstruction += allTransitDetails[0].steps[i].instructions + '\n' + '\n'; 
+                }
+                setOtherInstruction(otherInstruction);
+            }
+            setNextStopName(sorted[nextStopIndex].label);
             
             // Optionally update the region here if needed
             return { success: true };
@@ -56,19 +73,10 @@ const useRouteLogic = () => {
 
     const fetchAndSetNextStop = useCallback(async (currentLocation) => {
         if (!currentLocation || sortedStops.length < 1) {
-            console.log("fetchAndSetNextStop triggered, no update to route, sortedStops length: " + sortedStops.length);
+            //console.log("fetchAndSetNextStop triggered, no update to route, sortedStops length: " + sortedStops.length);
             return;
         }
         try {
-            console.log("fetchAndSetNextStop triggered, nextStopIndex: ", nextStopIndex);
-
-            // Check if the user is already on the bus
-            if (currentInstruction && currentInstruction.includes("Bus to")) {
-                setIsOnBus(true);
-                console.log("User is on the bus");
-                return;
-            }
-
             const [busStops, busRoutes] = await Promise.all([fetchLtaBusStops(), fetchLtaBusRoutes()]);
             const response = await fetchRoutes([currentLocation, sortedStops[nextStopIndex]], 'transit');
             const allTransitDetails = parseRouteResponses(response, busStops, busRoutes);
@@ -77,28 +85,8 @@ const useRouteLogic = () => {
             setRouteDetails(prevState => ({
                 ...prevState,
                 nextStopCoords: polylineCoordinates,
-                //if this works, add first leg details here
                 nextStopDetails: allTransitDetails,
             }));
-
-            setCurrentInstruction(allTransitDetails[0].steps[0].instructions);
-            console.log(allTransitDetails[0].steps[1]);
-            let otherInstruction = " ";
-            if (sortedStops.length > 1) {
-                for (var i = 1; i < allTransitDetails[0].steps.length; i++)  {
-                    otherInstruction += allTransitDetails[0].steps[i].instructions + '\n' + '\n'; 
-                }
-                setOtherInstruction(otherInstruction);
-            }
-            // console.log('sortedStops: ', sortedStops);
-            // console.info('nextStopDetails: ', allTransitDetails[0]);
-            setNextStopName(sortedStops[nextStopIndex].label);
-            console.log("Updated Current Instruction");
-
-            if (isOnBus) {
-                setIsOnBus(false);
-                console.log("Bus has reached the intended stop");
-            }
 
             return { success: true };
         } catch (error) {
@@ -106,9 +94,21 @@ const useRouteLogic = () => {
             Alert.alert("Error", "Failed to process the route data.");
             return { success: false, message: error.message };
         }
-    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName, isOnBus, currentInstruction]);
+    }, [sortedStops, nextStopIndex, setCurrentInstruction, setNextStopName]);
 
-    return { stops, setStops, fetchAndSetRoute, region, setRegion, setNextStopIndex, setOtherInstruction, fetchAndSetNextStop, nextStopIndex, isOnBus };
+    return { 
+        stops, 
+        setStops, 
+        fetchAndSetRoute, 
+        region, 
+        setRegion, 
+        setNextStopIndex, 
+        setOtherInstruction, 
+        fetchAndSetNextStop, 
+        nextStopIndex, 
+        nextStepIndex,
+        setNextStepIndex,
+    };
 };
 
 export default useRouteLogic;
